@@ -587,10 +587,16 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|MMC_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|FPGA_RESET_24_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOD, P5V_FPGA_EN_Pin|CAN1_S_Pin|FPGA_RESET_09_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : MMC_RST_Pin MMC_EN_Pin */
   GPIO_InitStruct.Pin = MMC_RST_Pin|MMC_EN_Pin;
@@ -599,8 +605,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_S_BAND_TX_Pin EN_UHF_AMP_RX__Pin MEM_SEL_Pin */
-  GPIO_InitStruct.Pin = EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin;
+  /*Configure GPIO pin : RF_IRQ_Pin */
+  GPIO_InitStruct.Pin = RF_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(RF_IRQ_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : EN_S_BAND_TX_Pin EN_UHF_AMP_RX__Pin MEM_SEL_Pin FPGA_RESET_PS_Pin */
+  GPIO_InitStruct.Pin = EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -612,12 +624,40 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : EN_AGC_UHF_Pin EN_PA_UHF_Pin FPGA_RESET_24_Pin */
+  GPIO_InitStruct.Pin = EN_AGC_UHF_Pin|EN_PA_UHF_Pin|FPGA_RESET_24_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : LED_PE14_Pin LED_PE15_Pin */
   GPIO_InitStruct.Pin = LED_PE14_Pin|LED_PE15_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : P5V_FPGA_EN_Pin CAN1_S_Pin FPGA_RESET_09_Pin CAN2_S_Pin */
+  GPIO_InitStruct.Pin = P5V_FPGA_EN_Pin|CAN1_S_Pin|FPGA_RESET_09_Pin|CAN2_S_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : P5V_FPGA_PG_Pin MONITOR_PG_Pin MONITOR_TC_Pin ALERT_T_PA_Pin
+                           FLAGB_TX_S_Pin CAN1_FAULT_Pin CAN2_FAULT_Pin */
+  GPIO_InitStruct.Pin = P5V_FPGA_PG_Pin|MONITOR_PG_Pin|MONITOR_TC_Pin|ALERT_T_PA_Pin
+                          |FLAGB_TX_S_Pin|CAN1_FAULT_Pin|CAN2_FAULT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : P5V_RF_PG_Pin */
+  GPIO_InitStruct.Pin = P5V_RF_PG_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(P5V_RF_PG_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
