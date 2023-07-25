@@ -73,6 +73,8 @@ void Error_Handler(void);
 #define EN_AGC_UHF_GPIO_Port GPIOB
 #define EN_PA_UHF_Pin GPIO_PIN_2
 #define EN_PA_UHF_GPIO_Port GPIOB
+#define EN_RX_UHF_Pin GPIO_PIN_11
+#define EN_RX_UHF_GPIO_Port GPIOE
 #define P5V_RF_EN_Pin GPIO_PIN_13
 #define P5V_RF_EN_GPIO_Port GPIOE
 #define LED_PE14_Pin GPIO_PIN_14
