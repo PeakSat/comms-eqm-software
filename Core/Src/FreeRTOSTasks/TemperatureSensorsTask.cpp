@@ -3,7 +3,7 @@
 
 void TemperatureSensorsTask::execute() {
     auto config = TMP117::Config();
-    TMP117::TMP117 tempSensor = TMP117::TMP117(hi2c2, TMP117::I2CAddress::Address1, config);
+    TMP117::TMP117 tempSensor = TMP117::TMP117(hi2c1, TMP117::I2CAddress::Address1, config);
 
     while(true){
         etl::pair<TMP117::Error, float> temperature = tempSensor.getTemperature(true);

@@ -2,15 +2,16 @@
 #include "FreeRTOS.h"
 #include "list.h"
 #include "task.h"
-//#include "DummyTask.h"
+#include "DummyTask.h"
 //#include "at86rf215.hpp"
 //#include "at86rf215config.hpp"
 #include "MCUTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
+#include "TimeKeepingTask.hpp"
 
 extern SPI_HandleTypeDef hspi1;
-extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart4;
 extern I2C_HandleTypeDef hi2c2;
 
 
@@ -21,10 +22,8 @@ static void vClassTask(void *pvParameters) {
 
 void blinkyTask1(void * pvParameters){
     for(;;){
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-        HAL_Delay(50);
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
-        HAL_Delay(50);
+        HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
+        HAL_Delay(500);
     }
 }
 
@@ -41,20 +40,24 @@ void blinkyTask2(void * pvParameters){
 
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
-    mcuTemperatureTask.emplace();
-    temperatureSensorsTask.emplace();
+//    mcuTemperatureTask.emplace();
+//    temperatureSensorsTask.emplace();
+    timeKeepingTask.emplace();
 
+//    dummyTask.emplace();
     uartGatekeeperTask->createTask();
-    temperatureSensorsTask->createTask();
-    mcuTemperatureTask->createTask();
-
-    vTaskStartScheduler();
+    timeKeepingTask->createTask();
+//    dummyTask->createTask();
+//    temperatureSensorsTask->createTask();
+//    mcuTemperatureTask->createTask();
+//
 
     /**
      * Uncomment below and comment above for Led task visualization (for STM32H743)
      */
-//    xTaskCreate(blinkyTask1, "blinkyTask 2", 1000, nullptr, tskIDLE_PRIORITY + 1, nullptr);
+//    xTaskCreate(blinkyTask1, "blinkyTask 1", 1000, nullptr, tskIDLE_PRIORITY + 1, nullptr);
 //    xTaskCreate(blinkyTask2, "blinkyTask 2", 1000, nullptr, tskIDLE_PRIORITY + 1, nullptr);
+    vTaskStartScheduler();
     for(;;);
     return;
 }

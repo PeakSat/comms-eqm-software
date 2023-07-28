@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOS.h"
+#include "list.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,6 +50,8 @@ FDCAN_HandleTypeDef hfdcan2;
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
+RTC_HandleTypeDef hrtc;
+
 SPI_HandleTypeDef hspi2;
 SPI_HandleTypeDef hspi4;
 
@@ -70,6 +73,7 @@ static void MX_SPI4_Init(void);
 static void MX_UART4_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_ADC3_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -116,6 +120,7 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -125,16 +130,13 @@ int main(void)
 //    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
 
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
+    main_cpp();
     while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
     // LED Blinking Test
-      HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
-      HAL_Delay(100);
-      HAL_GPIO_TogglePin(LED_PE15_GPIO_Port, LED_PE15_Pin);
-      HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -158,11 +160,17 @@ void SystemClock_Config(void)
 
   while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
+  /** Configure LSE Drive Capability
+  */
+  HAL_PWR_EnableBkUpAccess();
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
+
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 1;
@@ -240,7 +248,7 @@ static void MX_ADC3_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_64CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -252,6 +260,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
   sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -462,6 +471,70 @@ static void MX_I2C2_Init(void)
   /* USER CODE BEGIN I2C2_Init 2 */
 
   /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN Check_RTC_BKUP */
+
+  /* USER CODE END Check_RTC_BKUP */
+
+  /** Initialize RTC and set the Time and Date
+  */
+  sTime.Hours = 0x0;
+  sTime.Minutes = 0x0;
+  sTime.Seconds = 0x0;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.Month = RTC_MONTH_JANUARY;
+  sDate.Date = 0x1;
+  sDate.Year = 0x0;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
 
 }
 
