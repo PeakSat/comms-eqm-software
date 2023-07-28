@@ -129,11 +129,20 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 //    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
 
-    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(EN_S_BAND_TX_GPIO_Port, EN_S_BAND_TX_Pin, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
+
     main_cpp();
     while (1)
   {
     /* USER CODE END WHILE */
+
+    HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
+    HAL_Delay(300);
 
     /* USER CODE BEGIN 3 */
     // LED Blinking Test
@@ -727,7 +736,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|FPGA_RESET_24_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, EN_RX_UHF_Pin|P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, P5V_FPGA_EN_Pin|CAN1_S_Pin|FPGA_RESET_09_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
@@ -765,8 +774,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : P5V_RF_EN_Pin LED_PE14_Pin LED_PE15_Pin */
-  GPIO_InitStruct.Pin = P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin;
+  /*Configure GPIO pins : EN_RX_UHF_Pin P5V_RF_EN_Pin LED_PE14_Pin LED_PE15_Pin */
+  GPIO_InitStruct.Pin = EN_RX_UHF_Pin|P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

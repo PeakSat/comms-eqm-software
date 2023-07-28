@@ -5,6 +5,8 @@
 #include "DummyTask.h"
 //#include "at86rf215.hpp"
 //#include "at86rf215config.hpp"
+#include "CurrentSensorsTask.hpp"
+//#include "ina3221.hpp"
 #include "MCUTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
@@ -42,11 +44,20 @@ extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
 //    mcuTemperatureTask.emplace();
 //    temperatureSensorsTask.emplace();
-    timeKeepingTask.emplace();
+//    timeKeepingTask.emplace();
 
+
+    currentSensorsTask.emplace();
+    dummyTask.emplace();
+//    auto error = INA3221::Error::NO_ERRORS;
+//    INA3221::INA3221 currentSensor = INA3221::INA3221(hi2c1, INA3221::INA3221Config(), error);
+
+//    LOG_DEBUG << "MANID: " << currentSensor.getManID().value();
 //    dummyTask.emplace();
     uartGatekeeperTask->createTask();
-    timeKeepingTask->createTask();
+    currentSensorsTask->createTask();
+    dummyTask->createTask();
+//    timeKeepingTask->createTask();
 //    dummyTask->createTask();
 //    temperatureSensorsTask->createTask();
 //    mcuTemperatureTask->createTask();
@@ -56,7 +67,7 @@ extern "C" void main_cpp(){
      * Uncomment below and comment above for Led task visualization (for STM32H743)
      */
 //    xTaskCreate(blinkyTask1, "blinkyTask 1", 1000, nullptr, tskIDLE_PRIORITY + 1, nullptr);
-//    xTaskCreate(blinkyTask2, "blinkyTask 2", 1000, nullptr, tskIDLE_PRIORITY + 1, nullptr);
+//    xTaskCreate(blinkyTask2, "blinkyTask 2", 1000, nllptr, tskIDLE_PRIORITY + 1, nullptr);
     vTaskStartScheduler();
     for(;;);
     return;

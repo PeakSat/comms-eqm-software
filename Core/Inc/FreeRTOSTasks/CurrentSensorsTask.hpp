@@ -4,11 +4,11 @@
 #include "Task.hpp"
 #include "main.h"
 
-extern I2C_HandleTypeDef hi2c2;
+extern I2C_HandleTypeDef hi2c1;
 
 class CurrentSensorsTask : public Task {
 private:
-    static constexpr uint16_t DelayMs = 1000;
+    static constexpr uint16_t DelayMs = 10;
     static constexpr uint16_t TaskStackDepth = 2000;
     static constexpr uint8_t Precision = 3;
 
