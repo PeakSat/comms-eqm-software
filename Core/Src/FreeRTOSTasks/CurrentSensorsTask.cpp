@@ -22,14 +22,16 @@ void CurrentSensorsTask::execute() {
             auto shuntCurrent = currentSensor.getCurrent(i);
             auto shuntVoltage = currentSensor.getShuntVoltage(i);
             auto busVoltage = currentSensor.getBusVoltage(i);
+            auto power = currentSensor.getPower(i); 
             if (!shuntCurrent.has_value()) {
                 LOG_ERROR << "Cannot get voltage\r\b";
                 continue;
             }
             Logger::format.precision(Precision);
-            LOG_DEBUG << "Channel shunt current\t" << i << ": " << shuntCurrent.value() << "\r\b";
-            LOG_DEBUG << "Channel shunt Voltage\t" << i << ": " << shuntVoltage.value() << "\r\b";
-            LOG_DEBUG << "Channel bus Voltage\t" << i << ": " << busVoltage.value() << "\r\n";
+            LOG_DEBUG << "Channel shunt current\t" << i << ": " << shuntCurrent.value();
+            LOG_DEBUG << "Channel shunt Voltage\t" << i << ": " << shuntVoltage.value();
+            LOG_DEBUG << "Channel bus Voltage\t" << i << ": " << busVoltage.value();
+            LOG_DEBUG << "Channel power\t" << i << ": " << power.value() << "\n";  
         }
 
         vTaskDelay(pdMS_TO_TICKS(DelayMs));
