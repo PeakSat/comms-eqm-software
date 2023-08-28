@@ -40,17 +40,14 @@ void blinkyTask2(void * pvParameters){
 
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
-//    mcuTemperatureTask.emplace();
-//    temperatureSensorsTask.emplace();
+    mcuTemperatureTask.emplace();
+    temperatureSensorsTask.emplace();
     timeKeepingTask.emplace();
 
-//    dummyTask.emplace();
     uartGatekeeperTask->createTask();
     timeKeepingTask->createTask();
-//    dummyTask->createTask();
-//    temperatureSensorsTask->createTask();
-//    mcuTemperatureTask->createTask();
-//
+    temperatureSensorsTask->createTask();
+    mcuTemperatureTask->createTask();
 
     /**
      * Uncomment below and comment above for Led task visualization (for STM32H743)
