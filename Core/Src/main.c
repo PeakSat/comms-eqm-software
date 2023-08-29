@@ -85,6 +85,14 @@ static void MX_SDMMC1_MMC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  // basically copied from lsf's tests. 
+  uint8_t writeBuffer[512] = {1, 2, 3, 4, 5}; 
+  uint8_t readBuffer[512] = {}; 
+  HAL_StatusTypeDef ret;
+  HAL_MMC_CardInfoTypeDef pCardInfo;
+  HAL_MMC_CardStateTypeDef cardState;
+  HAL_MMC_StateTypeDef state;
+
 
   /* USER CODE END 1 */
 
@@ -120,28 +128,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
-
-//    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(EN_S_BAND_TX_GPIO_Port, EN_S_BAND_TX_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(EN_S_BAND_TX_GPIO_Port, EN_S_BAND_TX_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
 //    HAL_GPIO_TogglePin(LED_PE15_GPIO_Port, LED_PE15_Pin);
+//
+  cardState = HAL_MMC_GetCardState(&hmmc1);
+  state = HAL_MMC_GetState(&hmmc1);
+  // HAL_MMC_InitCard() should not be needed here, as it is executed in MX_SDMMC1_MMC_Init()
+  ret = HAL_MMC_GetCardInfo(&hmmc1, &pCardInfo);
+  ret = HAL_MMC_WriteBlocks(&hmmc1, writeBuffer, 1, 1, 1000);
+  ret = HAL_MMC_ReadBlocks(&hmmc1, readBuffer, 1, 1, 1000);
+  // maybe compare the buffers data after the operation and have some leds blink, if they match? 
+
     while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    // LED Blinking Test
-      HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
-      HAL_Delay(100);
-//    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-//    HAL_Delay(12);
-//    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
-//    HAL_Delay(1);
-//      HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
   }
   /* USER CODE END 3 */
 }
