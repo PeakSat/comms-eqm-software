@@ -100,6 +100,12 @@ void Error_Handler(void);
 #define BUS_SCL_GPIO_Port GPIOB
 #define BUS_SDA_Pin GPIO_PIN_11
 #define BUS_SDA_GPIO_Port GPIOB
+#define GNSS_UART_RX_Pin GPIO_PIN_12
+#define GNSS_UART_RX_GPIO_Port GPIOB
+#define GNSS_UART_TX_Pin GPIO_PIN_13
+#define GNSS_UART_TX_GPIO_Port GPIOB
+#define GNSS_RSTN_Pin GPIO_PIN_14
+#define GNSS_RSTN_GPIO_Port GPIOB
 #define MONITOR_PG_Pin GPIO_PIN_10
 #define MONITOR_PG_GPIO_Port GPIOD
 #define MONITOR_TC_Pin GPIO_PIN_11
@@ -110,10 +116,26 @@ void Error_Handler(void);
 #define MMC_EN_GPIO_Port GPIOC
 #define P5V_RF_PG_Pin GPIO_PIN_7
 #define P5V_RF_PG_GPIO_Port GPIOC
+#define MCU_MMC_D0_Pin GPIO_PIN_8
+#define MCU_MMC_D0_GPIO_Port GPIOC
+#define MCU_MMC_D1_Pin GPIO_PIN_9
+#define MCU_MMC_D1_GPIO_Port GPIOC
 #define P3V3_RF_PG_Pin GPIO_PIN_9
 #define P3V3_RF_PG_GPIO_Port GPIOA
 #define MEM_SEL_Pin GPIO_PIN_10
 #define MEM_SEL_GPIO_Port GPIOA
+#define JTMS_SWDIO_Pin GPIO_PIN_13
+#define JTMS_SWDIO_GPIO_Port GPIOA
+#define JTCK_SWCLK_Pin GPIO_PIN_14
+#define JTCK_SWCLK_GPIO_Port GPIOA
+#define MCU_MMC_D2_Pin GPIO_PIN_10
+#define MCU_MMC_D2_GPIO_Port GPIOC
+#define MCU_MMC_D3_Pin GPIO_PIN_11
+#define MCU_MMC_D3_GPIO_Port GPIOC
+#define MCU_MMC_CK_Pin GPIO_PIN_12
+#define MCU_MMC_CK_GPIO_Port GPIOC
+#define MCU_MMC_CMD_Pin GPIO_PIN_2
+#define MCU_MMC_CMD_GPIO_Port GPIOD
 #define CAN1_FAULT_Pin GPIO_PIN_3
 #define CAN1_FAULT_GPIO_Port GPIOD
 #define CAN1_S_Pin GPIO_PIN_4
@@ -122,6 +144,8 @@ void Error_Handler(void);
 #define CAN2_FAULT_GPIO_Port GPIOD
 #define CAN2_S_Pin GPIO_PIN_7
 #define CAN2_S_GPIO_Port GPIOD
+#define JTDO_SWO_Pin GPIO_PIN_3
+#define JTDO_SWO_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
