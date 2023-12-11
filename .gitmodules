@@ -1,6 +1,3 @@
-[submodule "Core/lib/component-drivers"]
-	path = Core/lib/component-drivers
-	url = https://gitlab.com/acubesat/comms/software/component-drivers.git
 [submodule "Core/lib/physical_layer"]
 	path = Core/lib/physical_layer
 	url = https://gitlab.com/acubesat/comms/software/physical_layer.git
