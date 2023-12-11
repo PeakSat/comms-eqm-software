@@ -4,3 +4,6 @@
 [submodule "Core/lib/cross-platform-software"]
 	path = Core/lib/cross-platform-software
 	url = https://gitlab.com/acubesat/obc/cross-platform-software.git
+[submodule "Core/lib/comms-component-drivers"]
+	path = Core/lib/comms-component-drivers
+	url = git@github.com:PeakSat/comms-component-drivers.git
