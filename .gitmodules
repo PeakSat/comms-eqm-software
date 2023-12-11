@@ -1,12 +1,9 @@
-[submodule "Core/lib/component-drivers"]
-	path = Core/lib/component-drivers
-	url = https://gitlab.com/acubesat/comms/software/component-drivers.git
-[submodule "Core/lib/physical_layer"]
-	path = Core/lib/physical_layer
-	url = https://gitlab.com/acubesat/comms/software/physical_layer.git
 [submodule "Core/lib/ccsds-telemetry-packets"]
 	path = Core/lib/ccsds-telemetry-packets
 	url = https://gitlab.com/acubesat/comms/software/ccsds-telemetry-packets.git
 [submodule "Core/lib/cross-platform-software"]
 	path = Core/lib/cross-platform-software
 	url = https://gitlab.com/acubesat/obc/cross-platform-software.git
+[submodule "Core/lib/comms-component-drivers"]
+	path = Core/lib/comms-component-drivers
+	url = git@github.com:PeakSat/comms-component-drivers.git

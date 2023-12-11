@@ -1,7 +1,7 @@
 #THIS FILE IS AUTO GENERATED FROM THE TEMPLATE! DO NOT CHANGE!
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.27)
 
 # specify cross-compilers and tools
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
@@ -64,12 +64,10 @@ include_directories(Core/lib/cross-platform-software/lib/ecss-services/inc)
 include_directories(Core/lib/cross-platform-software/lib/ecss-services/inc/Platform/x86)
 include_directories(Core/lib/cross-platform-software/lib/ecss-services/lib/etl/include)
 include_directories(Core/lib/cross-platform-software/lib/ecss-services/lib/logger/inc)
-include_directories(Core/lib/physical_layer/inc)
-include_directories(Core/lib/physical_layer/lib/etl/include)
-include_directories(Core/lib/physical_layer/lib/Catch2)
+
 include_directories(Core/lib/ccsds-telemetry-packets/inc)
-#include_directories(Core/lib/component-drivers/AT86RF215/inc)
-include_directories(Core/lib/component-drivers/TMP117/inc)
+#include_directories(Core/lib/comms-component-drivers/AT86RF215/inc)
+include_directories(Core/lib/comms-component-drivers/TMP117/inc)
 #include_directories(Drivers/CMSIS/DSP/Include)
 
 add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx)
@@ -90,8 +88,8 @@ file(GLOB_RECURSE DATA_LAYER "Core/lib/ccsds-telemetry-packets/src/*.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/main.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Logger.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Platform/x86/Logger.cpp")
-#file(GLOB_RECURSE DRIVERS "Core/lib/component-drivers/AT86RF215/src/*cpp" "Core/lib/component-drivers/TMP117/src/*cpp")
-file(GLOB_RECURSE DRIVERS "Core/lib/component-drivers/TMP117/src/*cpp")
+#file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/AT86RF215/src/*cpp" "Core/lib/comms-component-drivers/TMP117/src/*cpp")
+file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/TMP117/src/*cpp")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32H743VITX_FLASH.ld)
 
