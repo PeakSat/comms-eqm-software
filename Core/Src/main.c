@@ -130,9 +130,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+      HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(LED_PE14_GPIO_Port, LED_PE14_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(LED_PE15_GPIO_Port, LED_PE15_Pin, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
@@ -683,7 +684,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|FPGA_RESET_24_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, EN_RX_UHF_Pin|P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, P5V_FPGA_EN_Pin|CAN1_S_Pin|FPGA_RESET_09_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
