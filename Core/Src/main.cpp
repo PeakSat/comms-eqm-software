@@ -8,6 +8,7 @@
 #include "MCUTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
+#include "eMMCTask.hpp"
 
 extern SPI_HandleTypeDef hspi1;
 extern UART_HandleTypeDef huart3;
@@ -43,10 +44,13 @@ extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     mcuTemperatureTask.emplace();
     temperatureSensorsTask.emplace();
+    eMMCTask.emplace();
+
 
     uartGatekeeperTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
+    eMMCTask->createTask();
 
     vTaskStartScheduler();
 

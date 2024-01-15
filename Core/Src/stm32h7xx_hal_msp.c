@@ -450,16 +450,16 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 }
 
 /**
-* @brief SD MSP Initialization
+* @brief MMC MSP Initialization
 * This function configures the hardware resources used in this example
-* @param hsd: SD handle pointer
+* @param hmmc: MMC handle pointer
 * @retval None
 */
-void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
+void HAL_MMC_MspInit(MMC_HandleTypeDef* hmmc)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-  if(hsd->Instance==SDMMC1)
+  if(hmmc->Instance==SDMMC1)
   {
   /* USER CODE BEGIN SDMMC1_MspInit 0 */
 
@@ -510,14 +510,14 @@ void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
 }
 
 /**
-* @brief SD MSP De-Initialization
+* @brief MMC MSP De-Initialization
 * This function freeze the hardware resources used in this example
-* @param hsd: SD handle pointer
+* @param hmmc: MMC handle pointer
 * @retval None
 */
-void HAL_SD_MspDeInit(SD_HandleTypeDef* hsd)
+void HAL_MMC_MspDeInit(MMC_HandleTypeDef* hmmc)
 {
-  if(hsd->Instance==SDMMC1)
+  if(hmmc->Instance==SDMMC1)
   {
   /* USER CODE BEGIN SDMMC1_MspDeInit 0 */
 
