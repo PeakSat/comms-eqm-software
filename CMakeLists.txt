@@ -69,7 +69,7 @@ include_directories(Core/lib/physical_layer/lib/etl/include)
 include_directories(Core/lib/physical_layer/lib/Catch2)
 include_directories(Core/lib/ccsds-telemetry-packets/inc)
 #include_directories(Core/lib/component-drivers/AT86RF215/inc)
-include_directories(Core/lib/component-drivers/TMP117/inc)
+include_directories(Core/lib/comms-component-drivers/TMP117/inc)
 #include_directories(Drivers/CMSIS/DSP/Include)
 
 add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx)
@@ -91,7 +91,7 @@ list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/main.
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Logger.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Platform/x86/Logger.cpp")
 #file(GLOB_RECURSE DRIVERS "Core/lib/component-drivers/AT86RF215/src/*cpp" "Core/lib/component-drivers/TMP117/src/*cpp")
-file(GLOB_RECURSE DRIVERS "Core/lib/component-drivers/TMP117/src/*cpp")
+file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/TMP117/src/*cpp")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32H743VITX_FLASH.ld)
 
