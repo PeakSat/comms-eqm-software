@@ -46,11 +46,6 @@ DMA_HandleTypeDef hdma_adc3;
 FDCAN_HandleTypeDef hfdcan1;
 FDCAN_HandleTypeDef hfdcan2;
 
-I2C_HandleTypeDef hi2c1;
-I2C_HandleTypeDef hi2c2;
-
-IWDG_HandleTypeDef hiwdg1;
-
 MMC_HandleTypeDef hmmc1;
 
 SPI_HandleTypeDef hspi4;
@@ -68,13 +63,10 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_FDCAN2_Init(void);
-static void MX_I2C1_Init(void);
-static void MX_I2C2_Init(void);
 static void MX_SPI4_Init(void);
 static void MX_UART4_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_ADC3_Init(void);
-static void MX_IWDG1_Init(void);
 static void MX_SDMMC1_MMC_Init(void);
 static void MX_UART5_Init(void);
 /* USER CODE BEGIN PFP */
@@ -116,14 +108,13 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_FDCAN2_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
   MX_SPI4_Init();
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-  MX_IWDG1_Init();
+  HAL_Delay(1000);
   MX_SDMMC1_MMC_Init();
+  HAL_Delay(1000);
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
 
@@ -131,9 +122,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
 
-    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
     while (1)
   {
     /* USER CODE END WHILE */
@@ -170,9 +159,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 1;
@@ -376,131 +364,6 @@ static void MX_FDCAN2_Init(void)
   /* USER CODE BEGIN FDCAN2_Init 2 */
 
   /* USER CODE END FDCAN2_Init 2 */
-
-}
-
-/**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C1_Init(void)
-{
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00909FCE;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Analogue filter
-  */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Digital filter
-  */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
-
-}
-
-/**
-  * @brief I2C2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C2_Init(void)
-{
-
-  /* USER CODE BEGIN I2C2_Init 0 */
-
-  /* USER CODE END I2C2_Init 0 */
-
-  /* USER CODE BEGIN I2C2_Init 1 */
-
-  /* USER CODE END I2C2_Init 1 */
-  hi2c2.Instance = I2C2;
-  hi2c2.Init.Timing = 0x00909FCE;
-  hi2c2.Init.OwnAddress1 = 0;
-  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c2.Init.OwnAddress2 = 0;
-  hi2c2.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Analogue filter
-  */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Digital filter
-  */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C2_Init 2 */
-
-  /* USER CODE END I2C2_Init 2 */
-
-}
-
-/**
-  * @brief IWDG1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_IWDG1_Init(void)
-{
-
-  /* USER CODE BEGIN IWDG1_Init 0 */
-
-  /* USER CODE END IWDG1_Init 0 */
-
-  /* USER CODE BEGIN IWDG1_Init 1 */
-
-  /* USER CODE END IWDG1_Init 1 */
-  hiwdg1.Instance = IWDG1;
-  hiwdg1.Init.Prescaler = IWDG_PRESCALER_128;
-  hiwdg1.Init.Window = 4095;
-  hiwdg1.Init.Reload = 4095;
-  if (HAL_IWDG_Init(&hiwdg1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN IWDG1_Init 2 */
-
-  /* USER CODE END IWDG1_Init 2 */
 
 }
 
@@ -718,10 +581,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin|MMC_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin|MEM_SEL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|GNSS_RSTN_Pin, GPIO_PIN_RESET);
@@ -732,10 +595,16 @@ static void MX_GPIO_Init(void)
                           |LED_PE15_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MEM_SEL_GPIO_Port, MEM_SEL_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, CAN1_S_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : MMC_RST_Pin GAIN_SET_UHF_Pin AGC_TEMP_UHF_Pin MMC_EN_Pin */
-  GPIO_InitStruct.Pin = MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin|MMC_EN_Pin;
+  /*Configure GPIO pins : MMC_RST_Pin GAIN_SET_UHF_Pin AGC_TEMP_UHF_Pin */
+  GPIO_InitStruct.Pin = MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -747,8 +616,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(RF_IRQ_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_UHF_AMP_RX__Pin VSET_AGC_UHF_Pin MEM_SEL_Pin */
-  GPIO_InitStruct.Pin = EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin|MEM_SEL_Pin;
+  /*Configure GPIO pins : EN_UHF_AMP_RX__Pin VSET_AGC_UHF_Pin */
+  GPIO_InitStruct.Pin = EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -778,6 +647,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : BUS_SCL_Pin */
+  GPIO_InitStruct.Pin = BUS_SCL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF4_I2C2;
+  HAL_GPIO_Init(BUS_SCL_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : MONITOR_PG_Pin MONITOR_TC_Pin ALERT_T_PA_S_Pin CAN1_FAULT_Pin
                            CAN2_FAULT_Pin */
   GPIO_InitStruct.Pin = MONITOR_PG_Pin|MONITOR_TC_Pin|ALERT_T_PA_S_Pin|CAN1_FAULT_Pin
@@ -786,11 +663,25 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : MMC_EN_Pin */
+  GPIO_InitStruct.Pin = MMC_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(MMC_EN_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : P5V_RF_PG_Pin */
   GPIO_InitStruct.Pin = P5V_RF_PG_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(P5V_RF_PG_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MEM_SEL_Pin */
+  GPIO_InitStruct.Pin = MEM_SEL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(MEM_SEL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : CAN1_S_Pin CAN2_S_Pin */
   GPIO_InitStruct.Pin = CAN1_S_Pin|CAN2_S_Pin;

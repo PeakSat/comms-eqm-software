@@ -53,7 +53,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void main_cpp();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -98,8 +98,6 @@ void Error_Handler(void);
 #define LED_PE15_GPIO_Port GPIOE
 #define BUS_SCL_Pin GPIO_PIN_10
 #define BUS_SCL_GPIO_Port GPIOB
-#define BUS_SDA_Pin GPIO_PIN_11
-#define BUS_SDA_GPIO_Port GPIOB
 #define GNSS_UART_RX_Pin GPIO_PIN_12
 #define GNSS_UART_RX_GPIO_Port GPIOB
 #define GNSS_UART_TX_Pin GPIO_PIN_13
@@ -116,10 +114,6 @@ void Error_Handler(void);
 #define MMC_EN_GPIO_Port GPIOC
 #define P5V_RF_PG_Pin GPIO_PIN_7
 #define P5V_RF_PG_GPIO_Port GPIOC
-#define MCU_MMC_D0_Pin GPIO_PIN_8
-#define MCU_MMC_D0_GPIO_Port GPIOC
-#define MCU_MMC_D1_Pin GPIO_PIN_9
-#define MCU_MMC_D1_GPIO_Port GPIOC
 #define P3V3_RF_PG_Pin GPIO_PIN_9
 #define P3V3_RF_PG_GPIO_Port GPIOA
 #define MEM_SEL_Pin GPIO_PIN_10
