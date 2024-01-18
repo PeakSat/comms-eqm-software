@@ -47,7 +47,9 @@ FDCAN_HandleTypeDef hfdcan1;
 FDCAN_HandleTypeDef hfdcan2;
 
 I2C_HandleTypeDef hi2c1;
-I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
+
+IWDG_HandleTypeDef hiwdg1;
 
 MMC_HandleTypeDef hmmc1;
 
@@ -56,6 +58,8 @@ SPI_HandleTypeDef hspi4;
 UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart5;
 DMA_HandleTypeDef hdma_uart5_rx;
+
+WWDG_HandleTypeDef hwwdg1;
 
 /* USER CODE BEGIN PV */
 
@@ -74,6 +78,8 @@ static void MX_SDMMC1_MMC_Init(void);
 static void MX_UART5_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
+static void MX_IWDG1_Init(void);
+static void MX_WWDG1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -121,6 +127,8 @@ int main(void)
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
+  MX_IWDG1_Init();
+  MX_WWDG1_Init();
   /* USER CODE BEGIN 2 */
     main_cpp();
   /* USER CODE END 2 */
@@ -164,8 +172,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 1;
@@ -435,36 +444,65 @@ static void MX_I2C2_Init(void)
   /* USER CODE BEGIN I2C2_Init 1 */
 
   /* USER CODE END I2C2_Init 1 */
-  hi2c1.Instance = I2C2;
-    hi2c1.Init.Timing = 0x00909FCE;
-    hi2c1.Init.OwnAddress1 = 0;
-    hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-    hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-    hi2c1.Init.OwnAddress2 = 0;
-    hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
-    hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-    hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.Timing = 0x00909FCE;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
   {
     Error_Handler();
   }
 
   /** Configure Analogue filter
   */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c2, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
 
   /** Configure Digital filter
   */
-  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c2, 0) != HAL_OK)
   {
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
 
   /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief IWDG1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_IWDG1_Init(void)
+{
+
+  /* USER CODE BEGIN IWDG1_Init 0 */
+
+  /* USER CODE END IWDG1_Init 0 */
+
+  /* USER CODE BEGIN IWDG1_Init 1 */
+
+  /* USER CODE END IWDG1_Init 1 */
+  hiwdg1.Instance = IWDG1;
+  hiwdg1.Init.Prescaler = IWDG_PRESCALER_128;
+  hiwdg1.Init.Window = 4095;
+  hiwdg1.Init.Reload = 4095;
+  if (HAL_IWDG_Init(&hiwdg1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG1_Init 2 */
+
+  /* USER CODE END IWDG1_Init 2 */
 
 }
 
@@ -640,6 +678,36 @@ static void MX_UART5_Init(void)
   /* USER CODE BEGIN UART5_Init 2 */
 
   /* USER CODE END UART5_Init 2 */
+
+}
+
+/**
+  * @brief WWDG1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_WWDG1_Init(void)
+{
+
+  /* USER CODE BEGIN WWDG1_Init 0 */
+
+  /* USER CODE END WWDG1_Init 0 */
+
+  /* USER CODE BEGIN WWDG1_Init 1 */
+
+  /* USER CODE END WWDG1_Init 1 */
+  hwwdg1.Instance = WWDG1;
+  hwwdg1.Init.Prescaler = WWDG_PRESCALER_1;
+  hwwdg1.Init.Window = 64;
+  hwwdg1.Init.Counter = 64;
+  hwwdg1.Init.EWIMode = WWDG_EWI_DISABLE;
+  if (HAL_WWDG_Init(&hwwdg1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN WWDG1_Init 2 */
+
+  /* USER CODE END WWDG1_Init 2 */
 
 }
 
