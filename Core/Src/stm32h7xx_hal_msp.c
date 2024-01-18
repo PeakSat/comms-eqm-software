@@ -382,7 +382,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
     PB10     ------> I2C2_SCL
     PB11     ------> I2C2_SDA
     */
-    GPIO_InitStruct.Pin = BUS_SCL_Pin|BUS_SDA_Pin;
+    GPIO_InitStruct.Pin = BUS_SCL_Pin|GPIO_PIN_11;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -440,7 +440,7 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
     */
     HAL_GPIO_DeInit(BUS_SCL_GPIO_Port, BUS_SCL_Pin);
 
-    HAL_GPIO_DeInit(BUS_SDA_GPIO_Port, BUS_SDA_Pin);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_11);
 
   /* USER CODE BEGIN I2C2_MspDeInit 1 */
 
@@ -450,16 +450,16 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 }
 
 /**
-* @brief SD MSP Initialization
+* @brief MMC MSP Initialization
 * This function configures the hardware resources used in this example
-* @param hsd: SD handle pointer
+* @param hmmc: MMC handle pointer
 * @retval None
 */
-void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
+void HAL_MMC_MspInit(MMC_HandleTypeDef* hmmc)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-  if(hsd->Instance==SDMMC1)
+  if(hmmc->Instance==SDMMC1)
   {
   /* USER CODE BEGIN SDMMC1_MspInit 0 */
 
@@ -487,7 +487,7 @@ void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD
     */
-    GPIO_InitStruct.Pin = MCU_MMC_D0_Pin|MCU_MMC_D1_Pin|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
                           |MCU_MMC_CK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -510,14 +510,14 @@ void HAL_SD_MspInit(SD_HandleTypeDef* hsd)
 }
 
 /**
-* @brief SD MSP De-Initialization
+* @brief MMC MSP De-Initialization
 * This function freeze the hardware resources used in this example
-* @param hsd: SD handle pointer
+* @param hmmc: MMC handle pointer
 * @retval None
 */
-void HAL_SD_MspDeInit(SD_HandleTypeDef* hsd)
+void HAL_MMC_MspDeInit(MMC_HandleTypeDef* hmmc)
 {
-  if(hsd->Instance==SDMMC1)
+  if(hmmc->Instance==SDMMC1)
   {
   /* USER CODE BEGIN SDMMC1_MspDeInit 0 */
 
@@ -533,7 +533,7 @@ void HAL_SD_MspDeInit(SD_HandleTypeDef* hsd)
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD
     */
-    HAL_GPIO_DeInit(GPIOC, MCU_MMC_D0_Pin|MCU_MMC_D1_Pin|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
                           |MCU_MMC_CK_Pin);
 
     HAL_GPIO_DeInit(MCU_MMC_CMD_GPIO_Port, MCU_MMC_CMD_Pin);
