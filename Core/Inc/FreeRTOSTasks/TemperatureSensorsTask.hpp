@@ -4,7 +4,7 @@
 #include "Task.hpp"
 #include "main.h"
 
-extern I2C_HandleTypeDef hi2c2;
+extern I2C_HandleTypeDef hi2c1;
 
 class TemperatureSensorsTask : public Task {
 private:
