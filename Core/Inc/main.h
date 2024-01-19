@@ -57,12 +57,13 @@ void main_cpp();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SPI_NSS_Pin GPIO_PIN_4
-#define SPI_NSS_GPIO_Port GPIOE
+#define RF_SPI_SEL_Pin GPIO_PIN_4
+#define RF_SPI_SEL_GPIO_Port GPIOE
 #define MMC_RST_Pin GPIO_PIN_13
 #define MMC_RST_GPIO_Port GPIOC
 #define RF_IRQ_Pin GPIO_PIN_1
 #define RF_IRQ_GPIO_Port GPIOC
+#define RF_IRQ_EXTI_IRQn EXTI1_IRQn
 #define EN_S_BAND_TX_Pin GPIO_PIN_0
 #define EN_S_BAND_TX_GPIO_Port GPIOA
 #define EN_UHF_AMP_RX__Pin GPIO_PIN_1
@@ -75,6 +76,8 @@ void main_cpp();
 #define EN_AGC_UHF_GPIO_Port GPIOB
 #define EN_PA_UHF_Pin GPIO_PIN_2
 #define EN_PA_UHF_GPIO_Port GPIOB
+#define RF_RST_Pin GPIO_PIN_7
+#define RF_RST_GPIO_Port GPIOE
 #define EN_RX_UHF_Pin GPIO_PIN_11
 #define EN_RX_UHF_GPIO_Port GPIOE
 #define P5V_RF_EN_Pin GPIO_PIN_13
@@ -87,14 +90,6 @@ void main_cpp();
 #define BUS_SCL_GPIO_Port GPIOB
 #define BUS_SDA_Pin GPIO_PIN_11
 #define BUS_SDA_GPIO_Port GPIOB
-#define FPGA_NSS_Pin GPIO_PIN_12
-#define FPGA_NSS_GPIO_Port GPIOB
-#define FPGA_SCK_Pin GPIO_PIN_13
-#define FPGA_SCK_GPIO_Port GPIOB
-#define FPGA_MISO_Pin GPIO_PIN_14
-#define FPGA_MISO_GPIO_Port GPIOB
-#define FPGA_MOSI_Pin GPIO_PIN_15
-#define FPGA_MOSI_GPIO_Port GPIOB
 #define P5V_FPGA_EN_Pin GPIO_PIN_8
 #define P5V_FPGA_EN_GPIO_Port GPIOD
 #define P5V_FPGA_PG_Pin GPIO_PIN_9

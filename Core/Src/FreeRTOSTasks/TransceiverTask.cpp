@@ -77,7 +77,7 @@ void  TransceiverTask::directModConfig(bool enable){
     transceiver.set_direct_modulation(RF09, enable, err);
     uint8_t temp = (transceiver.spi_read_8(BBC0_FSKDM, error)) & 0b11111110;
     // enable direct modulation and pre - emphasis filter
-    transceiver.spi_write_8(BBC0_FSKDM, temp | 0b00000001, error);
+    transceiver.spi_write_8(BBC0_FSKDM, temp | 0b00000011, error);
 }
 
 void TransceiverTask::modulationConfig(){
@@ -88,24 +88,40 @@ void TransceiverTask::modulationConfig(){
 }
 
 void TransceiverTask::execute() {
+    // Turn off the PA for the TX
+    //HAL_GPIO_WritePin(RF_RST_GPIO_Port, RF_RST_Pin, GPIO_PIN_SET);
+    //
+    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+    // Turn off the RX
+    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
+    // Turn on RF power supply
+   //vTaskDelay(pdMS_TO_TICKS(5000));
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+
+
 
     while(checkTheSPI() != 0);
+
+
     setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
     transceiver.chip_reset(error);
     transceiver.setup(error);
+    transceiver.spi_write_8(AT86RF215::RegisterAddress::RF09_PADFE, 2 << 6, error);
     uint16_t currentPacketLength = 16;
     PacketType packet = createRandomPacket(currentPacketLength);
 
     modulationConfig();
-    uint8_t option = 1;
-    transceiver.transmitBasebandPacketsRx(AT86RF215::RF09, error);
+    uint8_t option = 0;
+    //transceiver.transmitBasebandPacketsRx(AT86RF215::RF09, error);
+    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
+    vTaskDelay(pdMS_TO_TICKS(200));
     while(true){
 
         if(option == 0)
         {
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
             LOG_DEBUG << "signal transmitted";
-            vTaskDelay(pdMS_TO_TICKS(100));
+            vTaskDelay(pdMS_TO_TICKS(2));
         }
         else{
             for(int i = 0 ; i < 2047; i++)
