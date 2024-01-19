@@ -1,6 +1,10 @@
 #include "TransceiverTask.hpp"
 using namespace AT86RF215;
 
+
+
+
+
 AT86RF215::At86rf215 TransceiverTask::transceiver = AT86RF215::At86rf215(&hspi4, AT86RF215::AT86RF215Configuration());
 
 uint8_t TransceiverTask::checkTheSPI() {
@@ -94,6 +98,7 @@ void TransceiverTask::execute() {
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
     // Turn off the RX
     HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
+    
 
     while(checkTheSPI() != 0);
     setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));

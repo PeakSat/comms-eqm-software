@@ -51,8 +51,6 @@ I2C_HandleTypeDef hi2c2;
 
 IWDG_HandleTypeDef hiwdg1;
 
-MMC_HandleTypeDef hmmc1;
-
 SPI_HandleTypeDef hspi4;
 
 UART_HandleTypeDef huart4;
@@ -74,7 +72,6 @@ static void MX_SPI4_Init(void);
 static void MX_UART4_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_ADC3_Init(void);
-static void MX_SDMMC1_MMC_Init(void);
 static void MX_UART5_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
@@ -123,14 +120,13 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-  MX_SDMMC1_MMC_Init();
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_IWDG1_Init();
   MX_WWDG1_Init();
   /* USER CODE BEGIN 2 */
-    main_cpp();
+    //main_cpp();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -142,10 +138,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     // LED Blinking Test
-      HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
-      HAL_Delay(100);
-      HAL_GPIO_TogglePin(LED_PE15_GPIO_Port, LED_PE15_Pin);
-      HAL_Delay(1000);
+      HAL_GPIO_WritePin(LED_PE14_GPIO_Port, LED_PE14_Pin, GPIO_PIN_SET);
+      //HAL_GPIO_TogglePin(LED_PE14_GPIO_Port, LED_PE14_Pin);
+      //HAL_Delay(5000);
+      //HAL_GPIO_TogglePin(LED_PE15_GPIO_Port, LED_PE15_Pin);
+      //HAL_Delay(10000);
   }
   /* USER CODE END 3 */
 }
@@ -507,37 +504,6 @@ static void MX_IWDG1_Init(void)
 }
 
 /**
-  * @brief SDMMC1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_SDMMC1_MMC_Init(void)
-{
-
-  /* USER CODE BEGIN SDMMC1_Init 0 */
-
-  /* USER CODE END SDMMC1_Init 0 */
-
-  /* USER CODE BEGIN SDMMC1_Init 1 */
-
-  /* USER CODE END SDMMC1_Init 1 */
-  hmmc1.Instance = SDMMC1;
-  hmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
-  hmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
-  hmmc1.Init.BusWide = SDMMC_BUS_WIDE_4B;
-  hmmc1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
-  hmmc1.Init.ClockDiv = 0;
-  if (HAL_MMC_Init(&hmmc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN SDMMC1_Init 2 */
-
-  /* USER CODE END SDMMC1_Init 2 */
-
-}
-
-/**
   * @brief SPI4 Initialization Function
   * @param None
   * @retval None
@@ -843,6 +809,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(MEM_SEL_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC10 PC11 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PD2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : CAN1_S_Pin CAN2_S_Pin */
   GPIO_InitStruct.Pin = CAN1_S_Pin|CAN2_S_Pin;

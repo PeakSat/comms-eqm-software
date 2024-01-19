@@ -124,14 +124,6 @@ void main_cpp();
 #define JTMS_SWDIO_GPIO_Port GPIOA
 #define JTCK_SWCLK_Pin GPIO_PIN_14
 #define JTCK_SWCLK_GPIO_Port GPIOA
-#define MCU_MMC_D2_Pin GPIO_PIN_10
-#define MCU_MMC_D2_GPIO_Port GPIOC
-#define MCU_MMC_D3_Pin GPIO_PIN_11
-#define MCU_MMC_D3_GPIO_Port GPIOC
-#define MCU_MMC_CK_Pin GPIO_PIN_12
-#define MCU_MMC_CK_GPIO_Port GPIOC
-#define MCU_MMC_CMD_Pin GPIO_PIN_2
-#define MCU_MMC_CMD_GPIO_Port GPIOD
 #define CAN1_FAULT_Pin GPIO_PIN_3
 #define CAN1_FAULT_GPIO_Port GPIOD
 #define CAN1_S_Pin GPIO_PIN_4

@@ -1,5 +1,5 @@
 #include "eMMC/Driver.hpp"
-
+/*
 using namespace eMMC;
 
 extern MMC_HandleTypeDef hmmc1;
@@ -35,3 +35,4 @@ HAL_StatusTypeDef eMMC::eraseBlocksEMMC(uint32_t block_address_start, uint32_t b
     return HAL_MMC_Erase(&hmmc1, block_address_start, block_address_end);
 }
 
+*/
