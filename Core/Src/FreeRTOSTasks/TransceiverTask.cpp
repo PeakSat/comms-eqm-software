@@ -89,6 +89,7 @@ void TransceiverTask::modulationConfig(){
 void TransceiverTask::execute() {
     // Enable of the RF
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    vTaskDelay(pdMS_TO_TICKS(100));
     // Turn off the PA for the TX
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
     // Turn off the RX
@@ -104,7 +105,9 @@ void TransceiverTask::execute() {
     // Enable the power of the RF
     /*
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    vTaskDelay(pdMS_TO_TICKS(100));
     // Enable the PA for the TX
+
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
     // Turn off the RX
     HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
