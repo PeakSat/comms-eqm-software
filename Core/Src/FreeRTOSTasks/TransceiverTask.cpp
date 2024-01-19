@@ -87,17 +87,36 @@ void TransceiverTask::modulationConfig(){
 }
 
 void TransceiverTask::execute() {
+    // Disable of the RF
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
+    // Turn off the PA for the TX
+    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+    // Turn off the RX
+    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
+
     while(checkTheSPI() != 0);
     setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
     transceiver.chip_reset(error);
     transceiver.setup(error);
     uint16_t currentPacketLength = 16;
-    PacketType packet = createRandomPacket(currentPacketLength);
 
+    PacketType packet = createRandomPacket(currentPacketLength);
+    // Enable the power of the RF
+    /*
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    // Enable the PA for the TX
+    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
+    // Turn off the RX
+    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
+    */
     modulationConfig();
     while(true){
+        /*
         transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
         LOG_DEBUG << "signal transmitted";
-        vTaskDelay(pdMS_TO_TICKS(2));
+         */
+        LOG_DEBUG << "SPI is working" ;
+        vTaskDelay(pdMS_TO_TICKS(200));
+
     }
 }
