@@ -53,10 +53,12 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void main_cpp();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SPI_NSS_Pin GPIO_PIN_4
+#define SPI_NSS_GPIO_Port GPIOE
 #define MMC_RST_Pin GPIO_PIN_13
 #define MMC_RST_GPIO_Port GPIOC
 #define RF_IRQ_Pin GPIO_PIN_1

@@ -3,15 +3,15 @@
 #include "list.h"
 #include "task.h"
 //#include "DummyTask.h"
-//#include "at86rf215.hpp"
-//#include "at86rf215config.hpp"
+#include "TransceiverTask.hpp"
+#include "at86rf215config.hpp"
 #include "MCUTemperatureTask.hpp"
 #include "txUHFTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
 
-extern SPI_HandleTypeDef hspi1;
-extern UART_HandleTypeDef huart3;
+extern SPI_HandleTypeDef hspi4;
+extern UART_HandleTypeDef huart4;
 extern I2C_HandleTypeDef hi2c2;
 
 
@@ -36,18 +36,17 @@ void blinkyTask2(void * pvParameters){
     }
 }
 
-//namespace AT86RF215 {
-//    AT86RF215 transceiver = AT86RF215(&hspi1, AT86RF215Configuration());
-//}
 
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
-    mcuTemperatureTask.emplace();
-    temperatureSensorsTask.emplace();
+    //mcuTemperatureTask.emplace();
+//    temperatureSensorsTask.emplace();
+    transceiverTask.emplace();
 
     uartGatekeeperTask->createTask();
-    temperatureSensorsTask->createTask();
-    mcuTemperatureTask->createTask();
+    //temperatureSensorsTask->createTask();
+    //mcuTemperatureTask->createTask();
+    transceiverTask->createTask();
 
     vTaskStartScheduler();
 

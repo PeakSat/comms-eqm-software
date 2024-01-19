@@ -79,49 +79,46 @@ static void MX_ADC3_Init(void);
 
 /* USER CODE END 0 */
 
-void main_cpp();
-
 /**
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
+int main(void) {
+    /* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
+    /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+    /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
 
-  /* USER CODE BEGIN Init */
+    /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+    /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+    /* Configure the system clock */
+    SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+    /* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
+    /* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_FDCAN2_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
-  MX_SPI2_Init();
-  MX_SPI4_Init();
-  MX_UART4_Init();
-  MX_FDCAN1_Init();
-  MX_ADC3_Init();
-  /* USER CODE BEGIN 2 */
-    HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_RESET);
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
+    MX_DMA_Init();
+    MX_FDCAN2_Init();
+    MX_I2C1_Init();
+    MX_I2C2_Init();
+    MX_SPI2_Init();
+    MX_SPI4_Init();
+    MX_UART4_Init();
+    MX_FDCAN1_Init();
+    MX_ADC3_Init();
+    /* USER CODE BEGIN 2 */
+    //HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(LED_PE14_GPIO_Port, LED_PE14_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_PE15_GPIO_Port, LED_PE15_Pin, GPIO_PIN_SET);
+    //HAL_GPIO_WritePin(LED_PE15_GPIO_Port, LED_PE15_Pin, GPIO_PIN_SET);
 
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
@@ -129,6 +126,7 @@ int main(void)
     HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
     uint8_t step = 0;
     HAL_Delay(1000);
+    main_cpp();
 //    switch (step) {
 //        case 1:
 //            HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
@@ -155,26 +153,18 @@ int main(void)
 //            HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_SET);
 //            break;
 
-    main_cpp();
-  /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+    /* USER CODE END 2 */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
 //    HAL_GPIO_WritePin(P5V_FPGA_EN_GPIO_Port, P5V_FPGA_EN_Pin, GPIO_PIN_RESET);
 
 //    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
-    while (1)
-  {
-    /* USER CODE END WHILE */
-
-//    /* USER CODE BEGIN 3 */
-
-      }
-  }
-  /* USER CODE END 3 */
 
 
-
+    /* USER CODE END 3 */
+}
 /**
   * @brief System Clock Configuration
   * @retval None
