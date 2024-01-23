@@ -487,17 +487,23 @@ void HAL_MMC_MspInit(MMC_HandleTypeDef* hmmc)
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
-                          |MCU_MMC_CK_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = MCU_MMC_CMD_Pin;
+    GPIO_InitStruct.Pin = MCU_MMC_CK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
+    HAL_GPIO_Init(MCU_MMC_CK_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = MCU_MMC_CMD_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
     HAL_GPIO_Init(MCU_MMC_CMD_GPIO_Port, &GPIO_InitStruct);

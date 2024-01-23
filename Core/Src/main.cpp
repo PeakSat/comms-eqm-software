@@ -2,10 +2,10 @@
 #include "FreeRTOS.h"
 #include "list.h"
 #include "task.h"
-//#include "DummyTask.h"
-//#include "at86rf215.hpp"
-//#include "at86rf215config.hpp"
-//#include "MCUTemperatureTask.hpp"
+#include "DummyTask.h"
+#include "at86rf215.hpp"
+#include "at86rf215config.hpp"
+#include "MCUTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
 #include "eMMCTask.hpp"
@@ -42,15 +42,15 @@ void blinkyTask2(void * pvParameters){
 
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
-//    mcuTemperatureTask.emplace();
-//    temperatureSensorsTask.emplace();
-    eMMCTask.emplace();
+    mcuTemperatureTask.emplace();
+    temperatureSensorsTask.emplace();
+//    eMMCTask.emplace();
 
 
     uartGatekeeperTask->createTask();
-//    temperatureSensorsTask->createTask();
-//    mcuTemperatureTask->createTask();
-    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
+    mcuTemperatureTask->createTask();
+//    eMMCTask->createTask();
 
     vTaskStartScheduler();
 
