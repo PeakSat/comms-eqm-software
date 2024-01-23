@@ -53,6 +53,8 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+
+static void MX_SDMMC1_MMC_Init(void);
 void main_cpp();
 /* USER CODE END EFP */
 

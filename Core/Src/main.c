@@ -112,12 +112,10 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-  HAL_Delay(1000);
   MX_SDMMC1_MMC_Init();
-  HAL_Delay(1000);
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
-
+    main_cpp();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -384,10 +382,10 @@ static void MX_SDMMC1_MMC_Init(void)
   /* USER CODE END SDMMC1_Init 1 */
   hmmc1.Instance = SDMMC1;
   hmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
-  hmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
+  hmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_ENABLE;
   hmmc1.Init.BusWide = SDMMC_BUS_WIDE_4B;
-  hmmc1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
-  hmmc1.Init.ClockDiv = 0;
+  hmmc1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_ENABLE;
+  hmmc1.Init.ClockDiv = 1023;
   if (HAL_MMC_Init(&hmmc1) != HAL_OK)
   {
     Error_Handler();
@@ -581,7 +579,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin|MMC_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin, GPIO_PIN_RESET);
@@ -595,16 +593,13 @@ static void MX_GPIO_Init(void)
                           |LED_PE15_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MEM_SEL_GPIO_Port, MEM_SEL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, CAN1_S_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : MMC_RST_Pin GAIN_SET_UHF_Pin AGC_TEMP_UHF_Pin */
-  GPIO_InitStruct.Pin = MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin;
+  /*Configure GPIO pins : MMC_RST_Pin GAIN_SET_UHF_Pin AGC_TEMP_UHF_Pin MMC_EN_Pin */
+  GPIO_InitStruct.Pin = MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin|MMC_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -616,8 +611,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(RF_IRQ_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_UHF_AMP_RX__Pin VSET_AGC_UHF_Pin */
-  GPIO_InitStruct.Pin = EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin;
+  /*Configure GPIO pins : EN_UHF_AMP_RX__Pin VSET_AGC_UHF_Pin MEM_SEL_Pin */
+  GPIO_InitStruct.Pin = EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin|MEM_SEL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -663,25 +658,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : MMC_EN_Pin */
-  GPIO_InitStruct.Pin = MMC_EN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(MMC_EN_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pin : P5V_RF_PG_Pin */
   GPIO_InitStruct.Pin = P5V_RF_PG_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(P5V_RF_PG_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : MEM_SEL_Pin */
-  GPIO_InitStruct.Pin = MEM_SEL_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(MEM_SEL_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : CAN1_S_Pin CAN2_S_Pin */
   GPIO_InitStruct.Pin = CAN1_S_Pin|CAN2_S_Pin;
