@@ -9,10 +9,9 @@
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
 #include "eMMCTask.hpp"
+#include "CurrentSensorsTask.hpp"
 
-extern SPI_HandleTypeDef hspi1;
-extern UART_HandleTypeDef huart3;
-extern I2C_HandleTypeDef hi2c1;
+
 
 
 template<class T>
@@ -43,14 +42,20 @@ void blinkyTask2(void * pvParameters){
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     mcuTemperatureTask.emplace();
+
+    eMMCTask.emplace();
     temperatureSensorsTask.emplace();
-//    eMMCTask.emplace();
+//    currentSensorsTask.emplace();
+
 
 
     uartGatekeeperTask->createTask();
-    temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
-//    eMMCTask->createTask();
+
+    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
+//    currentSensorsTask->createTask();
+
 
     vTaskStartScheduler();
 
