@@ -10,7 +10,7 @@
 #include "eMMCTask.hpp"
 #include "CANGatekeeperTask.hpp"
 #include "CANTestTask.hpp"
-
+#include "WatchdogTask.hpp"
 
 extern SPI_HandleTypeDef hspi1;
 extern UART_HandleTypeDef huart3;
@@ -28,6 +28,7 @@ extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     canGatekeeperTask.emplace();
     canTestTask.emplace();
+    watchdogTask.emplace();
 //    mcuTemperatureTask.emplace();
 //    temperatureSensorsTask.emplace();
 //    eMMCTask.emplace();
@@ -36,6 +37,7 @@ extern "C" void main_cpp(){
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
+    watchdogTask->createTask();
 //    temperatureSensorsTask->createTask();
 //    mcuTemperatureTask->createTask();
 //    eMMCTask->createTask();
@@ -65,7 +67,7 @@ extern "C" void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
             /* Reception Error */
             Error_Handler();
         }
-        canGatekeeperTask->switchActiveBus(CAN::Redundant);
+//        canGatekeeperTask->switchActiveBus(CAN::Main);
         CAN::rxFifo0.repair();
         CAN::Frame newFrame = CAN::getFrame(&CAN::rxFifo0, CAN::rxHeader0.Identifier);
         if(CAN::rxFifo0[0] >> 6 == CAN::TPProtocol::Frame::Single){
@@ -96,7 +98,7 @@ extern "C" void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
             /* Reception Error */
             Error_Handler();
         }
-        canGatekeeperTask->switchActiveBus(CAN::Main);
+//        canGatekeeperTask->switchActiveBus(CAN::Redundant);
         CAN::rxFifo1.repair();
         CAN::Frame newFrame = CAN::getFrame(&CAN::rxFifo1, CAN::rxHeader1.Identifier);
         canGatekeeperTask->addSFToIncoming(newFrame);

@@ -12,7 +12,7 @@ void CAN::configCANFilter() {
     sFilterConfig1.FilterIndex = 0;                          // In case of configuring multiple filters adapt accordingly
     sFilterConfig1.FilterType = FDCAN_FILTER_RANGE;         // Filter type
     sFilterConfig1.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;    // Where the messages that pass from the filter will go
-    sFilterConfig1.FilterID1 = 0x382;
+    sFilterConfig1.FilterID1 = 0x380;
     sFilterConfig1.FilterID2 = 0x3FF;
     sFilterConfig1.RxBufferIndex = 0;
     if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig1) != HAL_OK) {
@@ -26,7 +26,7 @@ void CAN::configCANFilter() {
     sFilterConfig2.FilterIndex = 0;                          // In case of configuring multiple filters adapt accordingly
     sFilterConfig2.FilterType = FDCAN_FILTER_RANGE;         // Filter type
     sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;    // Where the messages that pass from the filter will go
-    sFilterConfig2.FilterID1 = 0x382;
+    sFilterConfig2.FilterID1 = 0x380;
     sFilterConfig2.FilterID2 = 0x3FF;
     sFilterConfig2.RxBufferIndex = 0;
 
@@ -52,7 +52,7 @@ void CAN::initialize() {
         Error_Handler();
     }
     // Activate the notification for new data in FIFO1 for FDCAN2
-    if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+    if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -123,15 +123,15 @@ void CAN::send(const CAN::Frame &message, CAN::ActiveBus outgoingBus) {
     CAN::txHeader.Identifier = message.id;
 
     memcpy(txFifo.data(), message.data.data(), message.MaxDataLength);
-    if(outgoingBus == Main){
+//    if(outgoingBus == Main){
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN::txHeader, txFifo.data()) != HAL_OK) {
             LOG_ERROR << "CAN 1 Queue Full!";
         }
-    } else {
+//    } else {
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &CAN::txHeader, txFifo.data()) != HAL_OK) {
             LOG_ERROR << "CAN 2 Queue Full!";
         }
-    }
+//    }
 
 
 }
