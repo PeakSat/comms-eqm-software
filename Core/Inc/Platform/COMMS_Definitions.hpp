@@ -26,4 +26,8 @@ inline const uint8_t MaxTickCountStringSize = 10;
 
 inline String<LogSource::MaximumLettersInSubsystemName> LogSource::currentSubsystem = "COMMS";
 
+inline const uint8_t GNSSQueueSize = 64;
+
+inline const uint8_t MaxGNSSMessageSize = 128;
+
 #endif //STM32H7A3ZIQSETUP_COMMS_DEFINITIONS_H

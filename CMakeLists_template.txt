@@ -67,6 +67,7 @@ include_directories(Core/lib/ecss-services/lib/logger/inc)
 include_directories(Core/lib/ccsds-telemetry-packets/inc)
 include_directories(Core/lib/comms-component-drivers/AT86RF215/inc)
 include_directories(Core/lib/comms-component-drivers/TMP117/inc)
+#include_directories(Core/lib/comms-component-drivers/INA3221/inc)
 include_directories(Core/lib/cobs-c)
 include_directories(Drivers/CMSIS/DSP/Include)
 
