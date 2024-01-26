@@ -28,6 +28,14 @@ inline String<LogSource::MaximumLettersInSubsystemName> LogSource::currentSubsys
 
 inline const uint8_t GNSSQueueSize = 64;
 
-inline const uint8_t MaxGNSSMessageSize = 128;
+/**
+ * The maximum size for the data field of a GNSS Payload.
+ */
+inline const uint16_t GNSSPayloadSize = 1024;
+
+/**
+ * The maximum size for the data field of a GNSS Message.
+ */
+inline const uint16_t GNSSMessageSize = GNSSPayloadSize + 16;
 
 #endif //STM32H7A3ZIQSETUP_COMMS_DEFINITIONS_H

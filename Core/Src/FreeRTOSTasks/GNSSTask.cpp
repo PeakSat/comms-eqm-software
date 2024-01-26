@@ -1,27 +1,32 @@
 #include "GNSSTask.hpp"
+#include "GNSS.hpp"
 
 
 void GNSSTask::execute() {
     taskHandle = xTaskGetCurrentTaskHandle();
-    HAL_Delay(1000);
+
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-    HAL_Delay(1000);
+
+//    auto message = GNSSReceiver::configureMessageType(static_cast<ConfigurationType>(1), static_cast<Attributes>(2));
+//    message = GNSSReceiver::setFactoryDefaults();
+//    HAL_UART_Transmit(&huart5, message.messageBody.data(), 10, 1000);
+
+
     while(true){
-        xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
+//        xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
 
-//        for(uint8_t i = 0 ; i < MaxGNSSMessageSize; i++)
-//            incomingMessage.push_back(tcHandlingTask->RxDmaBuffer[i]);
-//        tcHandlingTask->RxDmaBuffer.clear();
-
-        // TC Parsing and Execution
-//        etl::string<TcCommandSize> cobsDecodedMsg = COBSdecode<TcCommandSize>(TcCommand.data(), tcHandlingTask->incomingMessageSize);
-//        uint8_t messageLength = cobsDecodedMsg.size();
-//        uint8_t *ecssTCBytes = reinterpret_cast<uint8_t *>(cobsDecodedMsg.data());
-//        auto ecssTC = MessageParser::parse(ecssTCBytes, messageLength);
-        LOG_DEBUG << incomingMessage.c_str();
+        uint8_t omg[]  = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//        HAL_UART_Transmit(&huart5, message.messageBody.data(), 10, 1000);
+        HAL_UART_Receive_DMA(&huart5, incomingMessage, 512, 1000);
+        etl::string<1000> minima = {};
+        for (uint8_t  byte : incomingMessage) {
+            minima.push_back(byte);
+        }
+        LOG_DEBUG << minima.c_str();
 //        MessageParser::execute(ecssTC);
 
-        incomingMessage.clear();
+//        incomingMessage.clear();
+
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
