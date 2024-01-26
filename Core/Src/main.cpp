@@ -43,8 +43,8 @@ void blinkyTask2(void * pvParameters){
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     mcuTemperatureTask.emplace();
-
-    eMMCTask.emplace();
+    gnssTask.emplace();
+//    eMMCTask.emplace();
     temperatureSensorsTask.emplace();
 //    currentSensorsTask.emplace();
 
@@ -52,8 +52,8 @@ extern "C" void main_cpp(){
 
     uartGatekeeperTask->createTask();
     mcuTemperatureTask->createTask();
-
-    eMMCTask->createTask();
+    gnssTask->createTask();
+//    eMMCTask->createTask();
     temperatureSensorsTask->createTask();
 //    currentSensorsTask->createTask();
 

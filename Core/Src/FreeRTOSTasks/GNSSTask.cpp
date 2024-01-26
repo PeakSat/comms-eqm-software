@@ -3,6 +3,9 @@
 
 void GNSSTask::execute() {
     taskHandle = xTaskGetCurrentTaskHandle();
+    HAL_Delay(1000);
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    HAL_Delay(1000);
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
 
@@ -19,6 +22,7 @@ void GNSSTask::execute() {
 //        MessageParser::execute(ecssTC);
 
         incomingMessage.clear();
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
