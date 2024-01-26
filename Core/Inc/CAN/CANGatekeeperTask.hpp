@@ -212,7 +212,7 @@ public:
     }
 
     void createTask() {
-        xTaskCreateStatic(vClassTask < CANGatekeeperTask > , this->TaskName, CANGatekeeperTask::TaskStackDepth, this,
+        taskHandle = xTaskCreateStatic(vClassTask < CANGatekeeperTask > , this->TaskName, CANGatekeeperTask::TaskStackDepth, this,
                           tskIDLE_PRIORITY + 2, this->taskStack, &(this->taskBuffer));
     }
 };
