@@ -49,6 +49,8 @@ FDCAN_HandleTypeDef hfdcan2;
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c2;
 
+IWDG_HandleTypeDef hiwdg1;
+
 MMC_HandleTypeDef hmmc1;
 
 SPI_HandleTypeDef hspi4;
@@ -74,6 +76,7 @@ static void MX_SDMMC1_MMC_Init(void);
 static void MX_UART5_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
+static void MX_IWDG1_Init(void);
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -118,16 +121,17 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-//  MX_SDMMC1_MMC_Init();
+  MX_SDMMC1_MMC_Init();
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
+  MX_IWDG1_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET );
-    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET );
+//    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET );
+//    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET );
 
     main_cpp();
   /* USER CODE END 2 */
@@ -171,8 +175,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 1;
@@ -306,12 +311,12 @@ static void MX_FDCAN1_Init(void)
   hfdcan1.Init.TransmitPause = DISABLE;
   hfdcan1.Init.ProtocolException = DISABLE;
   hfdcan1.Init.NominalPrescaler = 1;
-  hfdcan1.Init.NominalSyncJumpWidth = 1;
+  hfdcan1.Init.NominalSyncJumpWidth = 13;
   hfdcan1.Init.NominalTimeSeg1 = 86;
   hfdcan1.Init.NominalTimeSeg2 = 13;
-  hfdcan1.Init.DataPrescaler = 2;
+  hfdcan1.Init.DataPrescaler = 25;
   hfdcan1.Init.DataSyncJumpWidth = 1;
-  hfdcan1.Init.DataTimeSeg1 = 13;
+  hfdcan1.Init.DataTimeSeg1 = 2;
   hfdcan1.Init.DataTimeSeg2 = 1;
   hfdcan1.Init.MessageRAMOffset = 0;
   hfdcan1.Init.StdFiltersNbr = 0;
@@ -359,18 +364,18 @@ static void MX_FDCAN2_Init(void)
   hfdcan2.Init.TransmitPause = DISABLE;
   hfdcan2.Init.ProtocolException = DISABLE;
   hfdcan2.Init.NominalPrescaler = 1;
-  hfdcan2.Init.NominalSyncJumpWidth = 1;
+  hfdcan2.Init.NominalSyncJumpWidth = 13;
   hfdcan2.Init.NominalTimeSeg1 = 86;
   hfdcan2.Init.NominalTimeSeg2 = 13;
-  hfdcan2.Init.DataPrescaler = 2;
+  hfdcan2.Init.DataPrescaler = 25;
   hfdcan2.Init.DataSyncJumpWidth = 1;
-  hfdcan2.Init.DataTimeSeg1 = 13;
+  hfdcan2.Init.DataTimeSeg1 = 2;
   hfdcan2.Init.DataTimeSeg2 = 1;
-  hfdcan2.Init.MessageRAMOffset = 64;
+  hfdcan2.Init.MessageRAMOffset = 128;
   hfdcan2.Init.StdFiltersNbr = 0;
-  hfdcan2.Init.ExtFiltersNbr = 0;
+  hfdcan2.Init.ExtFiltersNbr = 1;
   hfdcan2.Init.RxFifo0ElmtsNbr = 0;
-  hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
+  hfdcan2.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_64;
   hfdcan2.Init.RxFifo1ElmtsNbr = 1;
   hfdcan2.Init.RxFifo1ElmtSize = FDCAN_DATA_BYTES_64;
   hfdcan2.Init.RxBuffersNbr = 0;
@@ -483,6 +488,35 @@ static void MX_I2C2_Init(void)
   /* USER CODE BEGIN I2C2_Init 2 */
 
   /* USER CODE END I2C2_Init 2 */
+
+}
+
+/**
+  * @brief IWDG1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_IWDG1_Init(void)
+{
+
+  /* USER CODE BEGIN IWDG1_Init 0 */
+
+  /* USER CODE END IWDG1_Init 0 */
+
+  /* USER CODE BEGIN IWDG1_Init 1 */
+
+  /* USER CODE END IWDG1_Init 1 */
+  hiwdg1.Instance = IWDG1;
+  hiwdg1.Init.Prescaler = IWDG_PRESCALER_128;
+  hiwdg1.Init.Window = 4095;
+  hiwdg1.Init.Reload = 4095;
+  if (HAL_IWDG_Init(&hiwdg1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN IWDG1_Init 2 */
+
+  /* USER CODE END IWDG1_Init 2 */
 
 }
 
@@ -707,14 +741,17 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|GNSS_RSTN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(EN_AGC_UHF_GPIO_Port, EN_AGC_UHF_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, EN_PA_UHF_Pin|GNSS_RSTN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, RF_RST_Pin|ALERT_T_PA_U_Pin|FLAGB_TX_UHF_Pin|FLAGB_RX_UHF_Pin
-                          |EN_RX_UHF_Pin|ALERT_T_PCB_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
+                          |ALERT_T_PCB_Pin|P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, CAN1_S_Pin|CAN2_S_Pin, GPIO_PIN_RESET);

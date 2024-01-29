@@ -359,7 +359,7 @@ GNSSMessage GNSSReceiver::SoftwareImageDownloadUsingExternalLoader(BaudRate baud
 }
 
 GNSSMessage GNSSReceiver::querySoftwareVersion(SoftwareType softwareType) {
-    Payload payload;
+    Payload payload ;
     payload.push_back(static_cast<uint8_t>(softwareType));
     return GNSSMessage{GNSSMessages::QuerySoftwareVersion, static_cast<uint16_t>(payload.size()), payload};
 }

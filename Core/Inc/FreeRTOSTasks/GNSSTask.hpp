@@ -38,7 +38,7 @@ public:
                                              &gnssQueue);
         configASSERT(gnssQueueHandle);
 
-//        // disabling the half buffer interrupt //
+        // disabling the half buffer interrupt //
         __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
         // disabling the full buffer interrupt //
         __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
