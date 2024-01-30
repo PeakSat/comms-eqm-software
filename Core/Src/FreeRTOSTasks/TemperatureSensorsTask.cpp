@@ -20,10 +20,10 @@ void TemperatureSensorsTask::execute() {
             etl::pair<TMP117::Error, float> temperature = tempSensor.getTemperature(true);
             if (temperature.first == TMP117::Error::NoErrors) {
                 Logger::format.precision(LoggerPrecision);
-                LOG_DEBUG << "Temperature at address " << addresses[i] << " is " << temperature.second;
+//                LOG_DEBUG << "Temperature at address " << addresses[i] << " is " << temperature.second;
                 PlatformParameters::commsPCBTemperature1.setValue(temperature.second);
             } else {
-                LOG_ERROR << "Error getting temperature";
+//                LOG_ERROR << "Error getting temperature";
             }
         }
         vTaskDelay(pdMS_TO_TICKS(DelayMs));

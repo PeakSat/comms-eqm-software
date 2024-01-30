@@ -23,7 +23,7 @@ public:
 * Buffer that holds the data of the DMA
 */
     typedef etl::string<GNSSMessageSize> GNSSMessage;
-    uint8_t incomingMessage[512];
+    uint8_t incomingMessage[256];
 //    uint16_t incomingMessageSize = 0;
     /**
      * Queue for incoming messages
@@ -42,7 +42,7 @@ public:
         __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
         // disabling the full buffer interrupt //
         __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 512);
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 256);
     }
 
     /**

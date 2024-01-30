@@ -1,8 +1,8 @@
 #pragma once
 
 #include "etl/vector.h"
-#import "GNSSDefinitions.hpp"
-#import "Platform/COMMS_Definitions.hpp"
+#include "GNSSDefinitions.hpp"
+#include "Platform/COMMS_Definitions.hpp"
 class GNSSMessage {
     etl::vector<uint8_t, 2> startOfSequence = {0xA0, 0xA1};
     etl::vector<uint8_t, 2> endOfSequence = {0x0D, 0x0A};

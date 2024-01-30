@@ -44,7 +44,7 @@ extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     mcuTemperatureTask.emplace();
     gnssTask.emplace();
-//    eMMCTask.emplace();
+    eMMCTask.emplace();
     temperatureSensorsTask.emplace();
 //    currentSensorsTask.emplace();
 
@@ -53,7 +53,7 @@ extern "C" void main_cpp(){
     uartGatekeeperTask->createTask();
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
-//    eMMCTask->createTask();
+    eMMCTask->createTask();
     temperatureSensorsTask->createTask();
 //    currentSensorsTask->createTask();
 
@@ -89,5 +89,5 @@ extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t S
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 
     // Reset the DMA to receive the next chunk of data
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->incomingMessage, 512);
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->incomingMessage, 256);
 }

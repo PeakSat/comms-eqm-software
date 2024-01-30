@@ -8,7 +8,7 @@ void GNSSTask::execute() {
     HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_SET);
 
     auto message = GNSSReceiver::QueryDOPMask();
-    HAL_UART_Transmit(&huart5, message.messageBody.data(), message.messageBody.size(), 500);
+//    HAL_UART_Transmit(&huart5, message.messageBody.data(), message.messageBody.size(), 500);
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
 
@@ -16,9 +16,9 @@ void GNSSTask::execute() {
         for (uint8_t  byte : incomingMessage) {
             GNSSMessage.push_back(byte);
         }
-        LOG_DEBUG << GNSSMessage.c_str();
-
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        LOG_DEBUG << GNSSMessage.c_str() << "\n\n\n\n";
+        new(&(incomingMessage)) uint8_t[256];
+//        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 

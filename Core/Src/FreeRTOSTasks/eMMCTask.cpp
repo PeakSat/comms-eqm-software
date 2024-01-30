@@ -1,6 +1,6 @@
 #include "eMMCTask.hpp"
 #include "eMMC/Driver.hpp"
-
+#include "main.h"
 void eMMC_info_show(HAL_MMC_CardInfoTypeDef info){
     LOG_DEBUG<<"*** EMMC INFO ***";
     LOG_DEBUG<<"Card Type: "<<info.CardType;
@@ -46,8 +46,8 @@ void eMMCTask::execute() {
         status = eMMC::writeBlockEMMC(data_buff, block_address_b);
         LOG_DEBUG<<"Status: "<<status;
 
-//        vTaskDelay(pdMS_TO_TICKS(DelayMs));
-        vTaskSuspend(taskHandle);
+        vTaskDelay(pdMS_TO_TICKS(DelayMs));
+//        vTaskSuspend(taskHandle);
     }
 
 }

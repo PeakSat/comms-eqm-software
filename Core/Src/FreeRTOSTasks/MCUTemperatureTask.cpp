@@ -35,7 +35,7 @@ void MCUTemperatureTask::execute() {
         uint16_t adcTempValue = HAL_ADC_GetValue(&hadc3);
 
         float temperature = (static_cast<float>(adcTempValue) - adcCalTemp30C)/(adcCalTemp110C - adcCalTemp30C) * (110.0F - 30.0F) + 30.0F;
-        LOG_DEBUG << "MCU Internal Temperature is " << temperature;
+//        LOG_DEBUG << "MCU Internal Temperature is " << temperature;
 
         HAL_ADC_Stop(&hadc3);
         vTaskDelay(pdMS_TO_TICKS(delayMs));

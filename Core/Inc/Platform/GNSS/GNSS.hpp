@@ -3,7 +3,7 @@
 #include "etl/vector.h"
 #include "GNSSMessage.hpp"
 
-#import "GNSSDefinitions.hpp"
+#include "GNSSDefinitions.hpp"
 
 using namespace GNSSDefinitions;
 
