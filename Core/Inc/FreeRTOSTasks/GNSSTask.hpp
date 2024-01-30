@@ -49,7 +49,7 @@ public:
      * Create freeRTOS Task
      */
     void createTask() {
-        xTaskCreateStatic(vClassTask < GNSSTask > , this->TaskName,
+        taskHandle = xTaskCreateStatic(vClassTask < GNSSTask > , this->TaskName,
                           GNSSTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
