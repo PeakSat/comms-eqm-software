@@ -11,9 +11,17 @@ void GNSSTask::execute() {
 //    HAL_UART_Transmit(&huart5, message.messageBody.data(), message.messageBody.size(), 500);
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
-
+        uint8_t found_dollar = 0;
         etl::string<512> GNSSMessage = {};
         for (uint8_t  byte : incomingMessage) {
+            if (byte == '$') {
+                found_dollar++;
+            }
+
+            if (found_dollar == 2) {
+                break;
+            }
+
             GNSSMessage.push_back(byte);
         }
         LOG_DEBUG << GNSSMessage.c_str() << "\n\n\n\n";
