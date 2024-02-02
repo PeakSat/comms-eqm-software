@@ -4,7 +4,7 @@
 
 
 CANGatekeeperTask::CANGatekeeperTask() : Task("CANGatekeeperTask") {
-    CAN::initialize();
+    CAN::initialize(0);
 
     outgoingQueue = xQueueCreateStatic(CAN::FrameQueueSize, sizeof(CAN::Frame), outgoingQueueStorageArea,
                                        &outgoingQueueBuffer);

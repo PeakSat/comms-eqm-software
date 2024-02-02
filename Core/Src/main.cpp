@@ -99,9 +99,17 @@ extern "C" void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
 //        canGatekeeperTask->switchActiveBus(CAN::Redundant);
         CAN::rxFifo1.repair();
         CAN::Frame newFrame = CAN::getFrame(&CAN::rxFifo1, CAN::rxHeader1.Identifier);
-        canGatekeeperTask->addSFToIncoming(newFrame);
-        xTaskNotifyFromISR(canGatekeeperTask->taskHandle, 0, eNoAction, &xHigherPriorityTaskWoken);
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        if(CAN::rxFifo0[0] >> 6 == CAN::TPProtocol::Frame::Single){
+            canGatekeeperTask->addSFToIncoming(newFrame);
+            xTaskNotifyFromISR(canGatekeeperTask->taskHandle, 0, eNoAction, &xHigherPriorityTaskWoken);
+
+        }else{
+            canGatekeeperTask->addMFToIncoming(newFrame);
+            if(CAN::rxFifo0[0] >> 6 == CAN::TPProtocol::Frame::Final){
+                xTaskNotifyFromISR(canGatekeeperTask->taskHandle, 0, eNoAction, &xHigherPriorityTaskWoken);
+                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+        }
 
         if (HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
             /* Notification Error */

@@ -5,13 +5,17 @@ using namespace CAN;
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 
-void CAN::configCANFilter() {
+void CAN::configCANFilter(uint32_t rx_fifo) {
     FDCAN_FilterTypeDef sFilterConfig1;
 
     sFilterConfig1.IdType = FDCAN_EXTENDED_ID;      // Standard or extended id
     sFilterConfig1.FilterIndex = 0;                          // In case of configuring multiple filters adapt accordingly
     sFilterConfig1.FilterType = FDCAN_FILTER_RANGE;         // Filter type
-    sFilterConfig1.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;    // Where the messages that pass from the filter will go
+    if(rx_fifo == 0){
+        sFilterConfig1.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+    }else{
+        sFilterConfig1.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;
+    }
     sFilterConfig1.FilterID1 = 0x380;
     sFilterConfig1.FilterID2 = 0x3FF;
     sFilterConfig1.RxBufferIndex = 0;
@@ -25,7 +29,11 @@ void CAN::configCANFilter() {
     sFilterConfig2.IdType = FDCAN_EXTENDED_ID;      // Standard or extended id
     sFilterConfig2.FilterIndex = 0;                          // In case of configuring multiple filters adapt accordingly
     sFilterConfig2.FilterType = FDCAN_FILTER_RANGE;         // Filter type
-    sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;    // Where the messages that pass from the filter will go
+    if(rx_fifo == 0){
+        sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
+    }else{
+        sFilterConfig2.FilterConfig = FDCAN_FILTER_TO_RXFIFO1;
+    }
     sFilterConfig2.FilterID1 = 0x380;
     sFilterConfig2.FilterID2 = 0x3FF;
     sFilterConfig2.RxBufferIndex = 0;
@@ -36,8 +44,8 @@ void CAN::configCANFilter() {
     }
 }
 
-void CAN::initialize() {
-    configCANFilter();
+void CAN::initialize(uint8_t fifo_select) {
+    configCANFilter(fifo_select);
     configureTxHeader();
 
     if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK) {
@@ -47,14 +55,27 @@ void CAN::initialize() {
         Error_Handler();
     }
 
-    // Activate the notification for new data in FIFO0 for FDCAN1
-    if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK) {
-        Error_Handler();
+    if(fifo_select==0){
+        // Activate the notification for new data in FIFO0 for FDCAN1
+        if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+            Error_Handler();
+        }
+        // Activate the notification for new data in FIFO1 for FDCAN2
+        if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+            Error_Handler();
+        }
+    }else{
+        // Activate the notification for new data in FIFO0 for FDCAN1
+        if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+            Error_Handler();
+        }
+        // Activate the notification for new data in FIFO1 for FDCAN2
+        if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+            Error_Handler();
+        }
     }
-    // Activate the notification for new data in FIFO1 for FDCAN2
-    if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK) {
-        Error_Handler();
-    }
+
+
 }
 
 void CAN::logMessage(const CAN::CANBuffer_t &rxBuf, FDCAN_RxHeaderTypeDef RxHeader, CAN::ActiveBus incomingBus) {

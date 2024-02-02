@@ -56,7 +56,7 @@ namespace CAN {
     /**
      * Configures the CAN filter parameters
      */
-    void configCANFilter();
+    void configCANFilter(uint32_t rx_fifo);
 
     /**
      * Possible states for the peripheral, to be used as arguments in the callback functions.
@@ -76,7 +76,7 @@ namespace CAN {
      * Sets the appropriate interrupt handlers, configures the storage area for incoming/outgoing buffers and
      * keeps only a single peripheral's interrupts active.
      */
-    void initialize();
+    void initialize(uint8_t fifo_select);
 
 
     /**
