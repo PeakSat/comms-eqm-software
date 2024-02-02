@@ -121,7 +121,7 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-//  MX_SDMMC1_MMC_Init();
+  MX_SDMMC1_MMC_Init();
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
@@ -729,13 +729,13 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|MMC_EN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(MMC_RST_GPIO_Port, MMC_RST_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin|MEM_SEL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, EN_UHF_AMP_RX__Pin|VSET_AGC_UHF_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin|MMC_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|GNSS_RSTN_Pin, GPIO_PIN_RESET);
@@ -750,6 +750,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MEM_SEL_GPIO_Port, MEM_SEL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, CAN1_S_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
