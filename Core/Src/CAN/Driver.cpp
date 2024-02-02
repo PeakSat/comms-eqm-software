@@ -144,11 +144,11 @@ void CAN::send(const CAN::Frame &message, CAN::ActiveBus outgoingBus) {
     CAN::txHeader.Identifier = message.id;
 
     memcpy(txFifo.data(), message.data.data(), message.MaxDataLength);
-//    if(outgoingBus == Main){
+    if(outgoingBus == Main){
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &CAN::txHeader, txFifo.data()) != HAL_OK) {
             LOG_ERROR << "CAN 1 Queue Full!";
         }
-//    } else {
+    } else {
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &CAN::txHeader, txFifo.data()) != HAL_OK) {
             LOG_ERROR << "CAN 2 Queue Full!";
         }
