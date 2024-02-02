@@ -6,7 +6,6 @@
 #endif
 #include "TimeKeepingTask.hpp"
 #include "MCUTemperatureTask.hpp"
-#include "AmbientTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "WatchdogTask.hpp"
 

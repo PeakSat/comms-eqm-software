@@ -11,11 +11,7 @@
 #include "CANGatekeeperTask.hpp"
 #include "CANTestTask.hpp"
 #include "WatchdogTask.hpp"
-
-extern SPI_HandleTypeDef hspi1;
-extern UART_HandleTypeDef huart3;
-extern I2C_HandleTypeDef hi2c1;
-
+#include "CurrentSensorsTask.hpp"
 
 template<class T>
 static void vClassTask(void *pvParameters) {
@@ -29,18 +25,20 @@ extern "C" void main_cpp(){
     canGatekeeperTask.emplace();
     canTestTask.emplace();
     watchdogTask.emplace();
-//    mcuTemperatureTask.emplace();
-//    temperatureSensorsTask.emplace();
-//    eMMCTask.emplace();
-
+    mcuTemperatureTask.emplace();
+    temperatureSensorsTask.emplace();
+    eMMCTask.emplace();
+    currentSensorsTask.emplace();
 
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
     watchdogTask->createTask();
-//    temperatureSensorsTask->createTask();
-//    mcuTemperatureTask->createTask();
-//    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
+    mcuTemperatureTask->createTask();
+    eMMCTask->createTask();
+    currectSensorsTask.emplace();
+
 
     vTaskStartScheduler();
 
