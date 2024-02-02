@@ -16,6 +16,13 @@ public:
     using PacketType = etl::array<uint8_t, MaxPacketLength>;
     static AT86RF215::At86rf215 transceiver;
     /**
+     *  0 for TX, 1 for RX
+     */
+    uint8_t txrx_bool = 1;
+    /*
+     *
+     */
+    /**
      * Function to check the SPI functionality.
      * In fine working functionality, we get Part Number At86rf21.
      * @return 0 if it works fine, 1 otherwise.
@@ -44,16 +51,26 @@ public:
     void setConfiguration(uint16_t pllFrequency09, uint8_t pllChannelNumber09);
     /**
      *
-     * @param enable true for turning ON the direct modulation which filters the harmonics in the frequency domain
+     * @param enable true for turning ON the direct modulation
      */
-    void directModConfig(bool enable);
+    void directModConfigAndPreEmphasisFilter(bool enableDM, bool enablePE, bool recommended);
     /**
      * Sets the modulation parameters (index, order and B*T) and sets the direct modulation ON
      */
     void modulationConfig();
+    /**
+     * Sets the receiver front end parameters for modulation index 1 according to table 6-62.
+     */
+    void receiverConfig(bool agc_enabled);
+
+    void txSRandTxFilter();
+
+    void txAnalogFrontEnd();
 
 
-    TransceiverTask() : Task("Transceiver signal transmission") {}
+
+    TransceiverTask() : Task("Transceiver signal transmission") {
+    }
 
     void execute();
 
@@ -68,6 +85,7 @@ private:
     constexpr static uint16_t DelayMs = 1;
     constexpr static uint16_t TaskStackDepth = 2000;
     constexpr static uint32_t FrequencyUHF = 401000;
+
     // QueueHandle_t packetQueue;
     AT86RF215::Error error;
     StackType_t taskStack[TaskStackDepth];

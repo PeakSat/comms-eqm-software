@@ -118,44 +118,20 @@ int main(void)
   MX_FDCAN1_Init();
   MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
-    //HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_RESET);
+
+
+
     HAL_GPIO_WritePin(LED_PE14_GPIO_Port, LED_PE14_Pin, GPIO_PIN_SET);
-    //HAL_GPIO_WritePin(LED_PE15_GPIO_Port, LED_PE15_Pin, GPIO_PIN_SET);
 
-    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(RF_RST_GPIO_Port, RF_RST_Pin, GPIO_PIN_SET);
-    uint8_t step = 0;
-    HAL_Delay(1000);
+    // ENABLE THE 5V POWER SUPPLY //
+    HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    // ENABLE THE RX SWITCH
+    HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
+    // ENABLE THE RX AMP
+    HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
+   
+
     main_cpp();
-//    switch (step) {
-//        case 1:
-//            HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
-//            break;
-//        case 2:
-//            HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
-//            break;
-//        case 3:
-//            HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_RESET);
-//            break;
-//        case 4:
-//            HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-//            HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
-//            HAL_GPIO_WritePin(EN_UHF_AMP_RX__GPIO_Port, EN_UHF_AMP_RX__Pin, GPIO_PIN_SET);
-//            break;
-
 
   /* USER CODE END 2 */
 
@@ -655,29 +631,29 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, RF_SPI_SEL_Pin|RF_RST_Pin|EN_RX_UHF_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, NSS_RF_Pin|P5V_RF_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(MMC_RST_GPIO_Port, MMC_RST_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|MMC_EN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, EN_S_BAND_TX_Pin|EN_UHF_AMP_RX_Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|EN_PA_UHF_Pin|FPGA_RESET_24_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|FPGA_RESET_24_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, RF_RST_Pin|EN_RX_UHF_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, P5V_FPGA_EN_Pin|CAN1_S_Pin|FPGA_RESET_09_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pins : RF_SPI_SEL_Pin RF_RST_Pin EN_RX_UHF_Pin LED_PE14_Pin
+  /*Configure GPIO pins : NSS_RF_Pin RF_RST_Pin EN_RX_UHF_Pin LED_PE14_Pin
                            LED_PE15_Pin */
-  GPIO_InitStruct.Pin = RF_SPI_SEL_Pin|RF_RST_Pin|EN_RX_UHF_Pin|LED_PE14_Pin
+  GPIO_InitStruct.Pin = NSS_RF_Pin|RF_RST_Pin|EN_RX_UHF_Pin|LED_PE14_Pin
                           |LED_PE15_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -691,14 +667,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : RF_IRQ_Pin */
-  GPIO_InitStruct.Pin = RF_IRQ_Pin;
+  /*Configure GPIO pin : TransceiverIT_Pin */
+  GPIO_InitStruct.Pin = TransceiverIT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(RF_IRQ_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(TransceiverIT_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_S_BAND_TX_Pin EN_UHF_AMP_RX__Pin MEM_SEL_Pin FPGA_RESET_PS_Pin */
-  GPIO_InitStruct.Pin = EN_S_BAND_TX_Pin|EN_UHF_AMP_RX__Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin;
+  /*Configure GPIO pins : EN_S_BAND_TX_Pin EN_UHF_AMP_RX_Pin MEM_SEL_Pin FPGA_RESET_PS_Pin */
+  GPIO_InitStruct.Pin = EN_S_BAND_TX_Pin|EN_UHF_AMP_RX_Pin|MEM_SEL_Pin|FPGA_RESET_PS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
