@@ -14,7 +14,7 @@ CANGatekeeperTask::CANGatekeeperTask() : Task("CANGatekeeperTask") {
                                          &incomingSFQueueBuffer);
     vQueueAddToRegistry(incomingSFQueue, "CAN Incoming SF");
 
-    incomingMFQueue = xQueueCreateStatic(CAN::FrameQueueSize, sizeof(CAN::Frame), incomingSFQueueStorageArea,
+    incomingMFQueue = xQueueCreateStatic(CAN::FrameQueueSize, sizeof(CAN::Frame), incomingMFQueueStorageArea,
                                          &incomingMFQueueBuffer);
     vQueueAddToRegistry(incomingSFQueue, "CAN Incoming MF");
 }

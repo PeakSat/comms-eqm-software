@@ -152,9 +152,7 @@ void CAN::send(const CAN::Frame &message, CAN::ActiveBus outgoingBus) {
         if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &CAN::txHeader, txFifo.data()) != HAL_OK) {
             LOG_ERROR << "CAN 2 Queue Full!";
         }
-//    }
-
-
+    }
 }
 
 void CAN::configureTxHeader() {

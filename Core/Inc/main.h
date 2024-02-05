@@ -62,8 +62,8 @@ void main_cpp();
 #define RF_IRQ_Pin GPIO_PIN_1
 #define RF_IRQ_GPIO_Port GPIOC
 #define RF_IRQ_EXTI_IRQn EXTI1_IRQn
-#define EN_UHF_AMP_RX__Pin GPIO_PIN_1
-#define EN_UHF_AMP_RX__GPIO_Port GPIOA
+#define EN_UHF_AMP_RX_Pin GPIO_PIN_1
+#define EN_UHF_AMP_RX_GPIO_Port GPIOA
 #define MONITOR_CRITICAL_Pin GPIO_PIN_2
 #define MONITOR_CRITICAL_GPIO_Port GPIOA
 #define MONITOR_WARNING_Pin GPIO_PIN_3

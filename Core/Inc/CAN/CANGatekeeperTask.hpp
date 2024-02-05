@@ -7,8 +7,6 @@
 #include "Platform/Peripheral_Definitions.hpp"
 #include "CAN/TPProtocol.hpp"
 
-void storeMsg(FDCAN_RxHeaderTypeDef msgHeader, CAN::CANBuffer_t msgData, CAN::ActiveBus bus);
-
 /**
  * Contains functionality of a Gatekeeper Task for the CAN Bus. It has the sole access to CAN, to avoid any
  * deadlocks that might be caused by simultaneous requests of access to the same resource. It works by having anyone
