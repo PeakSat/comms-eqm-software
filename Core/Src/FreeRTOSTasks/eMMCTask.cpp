@@ -46,8 +46,8 @@ void eMMCTask::execute() {
         status = eMMC::writeBlockEMMC(data_buff, block_address_b);
         LOG_DEBUG<<"Status: "<<status;
 
-//        vTaskDelay(pdMS_TO_TICKS(DelayMs));
-        vTaskSuspend(taskHandle);
+        vTaskDelay(pdMS_TO_TICKS(DelayMs));
+//        vTaskSuspend(taskHandle);
     }
 
 }
