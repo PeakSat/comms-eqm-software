@@ -2,15 +2,19 @@
 #include "main.h"
 #include "stm32h7xx_hal_gpio.h"
 #include "stm32h7xx_ll_gpio.h"
+
+
 using namespace eMMC;
 
 extern MMC_HandleTypeDef hmmc1;
 
 uint8_t eMMC::initializeEMMC(){
     HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, static_cast<GPIO_PinState>(RESET));
+    HAL_Delay(125);
     HAL_GPIO_WritePin(MEM_SEL_GPIO_Port, MEM_SEL_Pin, static_cast<GPIO_PinState>(SET));
-    HAL_GPIO_WritePin(MMC_RST_GPIO_Port, MMC_RST_Pin, static_cast<GPIO_PinState>(SET));
-    HAL_Delay(2000);
+    HAL_Delay(125);
+    HAL_GPIO_WritePin(MMC_RST_GPIO_Port, MMC_RST_Pin, static_cast<GPIO_PinState>(RESET));
+    HAL_Delay(125);
 
     hmmc1.Instance = SDMMC1;
     hmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
