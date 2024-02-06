@@ -35,7 +35,7 @@ extern "C" void main_cpp(){
     canTestTask->createTask();
     watchdogTask->createTask();
     temperatureSensorsTask->createTask();
-    mcuTemperatureTask->createTask();
+    mcuTemperatureTask->createTask(); // Delay to allow the temperature sensor to be read (it takes 10ms to read the temperature from the sensor
     eMMCTask->createTask();
 //    currectSensorsTask.emplace();
 
