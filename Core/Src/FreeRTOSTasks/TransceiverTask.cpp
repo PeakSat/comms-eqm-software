@@ -137,10 +137,13 @@ void TransceiverTask::execute(){
         // RECEIVE PINS //
         // ENABLE THE 5V POWER SUPPLY
         HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+        vTaskDelay(pdMS_TO_TICKS(1000));
         // ENABLE THE RX SWITCH
         HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
+        vTaskDelay(pdMS_TO_TICKS(1000));
         // ENABLE THE RX AMP
         HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
     else{
         // TRANSMIT PINS //

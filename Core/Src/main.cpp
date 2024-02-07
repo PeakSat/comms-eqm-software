@@ -25,22 +25,23 @@ extern "C" void main_cpp(){
     canGatekeeperTask.emplace();
     canTestTask.emplace();
     watchdogTask.emplace();
+    transceiverTask.emplace();
     mcuTemperatureTask.emplace();
     temperatureSensorsTask.emplace();
     eMMCTask.emplace();
     timeKeepingTask.emplace();
-    transceiverTask.emplace();
+
 //    currentSensorsTask.emplace();
 
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
+    transceiverTask->createTask();
     watchdogTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask(); // Delay to allow the temperature sensor to be read (it takes 10ms to read the temperature from the sensor
     eMMCTask->createTask();
     timeKeepingTask->createTask();
-    transceiverTask->createTask();
 //    currectSensorsTask.emplace();
 
 
