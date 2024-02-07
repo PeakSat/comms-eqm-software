@@ -128,9 +128,13 @@ void TransceiverTask::modulationConfig(){
 }
 
 void TransceiverTask::execute(){
+    HAL_GPIO_WritePin(RF_RST_GPIO_Port, RF_RST_Pin, GPIO_PIN_SET);
+    while (checkTheSPI() != 0) {
+        vTaskDelay(10);
+    };
     if(txrx)
     {
-        HAL_GPIO_WritePin(LED_PE14_GPIO_Port, LED_PE14_Pin, GPIO_PIN_SET);
+        // RECEIVE PINS
         // ENABLE THE 5V POWER SUPPLY //
         HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
         // ENABLE THE RX SWITCH
@@ -138,8 +142,12 @@ void TransceiverTask::execute(){
         // ENABLE THE RX AMP
         HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
     }
+    else{
+        HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+        // ENABLE TX AMP
+        HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
+    }
 
-    while (checkTheSPI() != 0);
     uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
     // ENABLE TXSFCS (FCS autonomously calculated)
     transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 4), error);
@@ -152,11 +160,6 @@ void TransceiverTask::execute(){
     uint8_t temp = transceiver.spi_read_8(RF09_AUXS, error);
     transceiver.spi_write_8(RF09_AUXS, temp | (1 << 6), error );
     transceiver.spi_write_8(RF09_AUXS, temp | (0 << 5), error );
-
-//    transceiver.spi_write_8(AT86RF215::BBC0_FSKC1, 192, error);
-//    transceiver.spi_write_8(AT86RF215::BBC0_FSKC2, 81, error);
-//    transceiver.spi_write_8(AT86RF215::BBC0_FSKC3, 15, error);
-//    transceiver.spi_write_8(AT86RF215::BBC0_FSKC4, 122, error);
 
 
     setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
@@ -177,14 +180,14 @@ void TransceiverTask::execute(){
         transceiver.set_state(AT86RF215::RF09, State::RF_RX, error);
         if (transceiver.get_state(AT86RF215::RF09, error) == (AT86RF215::State::RF_RX))
             LOG_DEBUG << " STATE = RX ";
-    } else {
+    } else{
+        transceiver.spi_write_8(AT86RF215::RegisterAddress::RF09_PADFE, 2 << 6, error);
         transceiver.TransmitterFrameEnd_flag = true;
     }
-
-    uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
-    uint8_t low_length_byte = 0;
-    uint8_t high_length_byte = 0;
+    uint8_t low_length_byte = 0, high_length_byte = 0;
     uint16_t received_length = 0;
+    uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
+
     while (true) {
         if (transceiverTask->txrx && transceiver.ReceiverFrameEnd_flag)
             {

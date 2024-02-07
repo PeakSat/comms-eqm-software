@@ -750,6 +750,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, RF_SPI_SEL_Pin|RF_RST_Pin|ALERT_T_PA_U_Pin|FLAGB_TX_UHF_Pin
+                          |FLAGB_RX_UHF_Pin|ALERT_T_PCB_Pin|P5V_RF_EN_Pin|LED_PE14_Pin
+                          |LED_PE15_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, MMC_RST_Pin|MMC_EN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
@@ -765,14 +770,21 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, RF_RST_Pin|ALERT_T_PA_U_Pin|FLAGB_TX_UHF_Pin|FLAGB_RX_UHF_Pin
-                          |ALERT_T_PCB_Pin|P5V_RF_EN_Pin|LED_PE14_Pin|LED_PE15_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, CAN1_S_Pin|CAN2_S_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : RF_SPI_SEL_Pin RF_RST_Pin ALERT_T_PA_U_Pin FLAGB_TX_UHF_Pin
+                           FLAGB_RX_UHF_Pin EN_RX_UHF_Pin ALERT_T_PCB_Pin P5V_RF_EN_Pin
+                           LED_PE14_Pin LED_PE15_Pin */
+  GPIO_InitStruct.Pin = RF_SPI_SEL_Pin|RF_RST_Pin|ALERT_T_PA_U_Pin|FLAGB_TX_UHF_Pin
+                          |FLAGB_RX_UHF_Pin|EN_RX_UHF_Pin|ALERT_T_PCB_Pin|P5V_RF_EN_Pin
+                          |LED_PE14_Pin|LED_PE15_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MMC_RST_Pin GAIN_SET_UHF_Pin AGC_TEMP_UHF_Pin */
   GPIO_InitStruct.Pin = MMC_RST_Pin|GAIN_SET_UHF_Pin|AGC_TEMP_UHF_Pin;
@@ -806,17 +818,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : RF_RST_Pin ALERT_T_PA_U_Pin FLAGB_TX_UHF_Pin FLAGB_RX_UHF_Pin
-                           EN_RX_UHF_Pin ALERT_T_PCB_Pin P5V_RF_EN_Pin LED_PE14_Pin
-                           LED_PE15_Pin */
-  GPIO_InitStruct.Pin = RF_RST_Pin|ALERT_T_PA_U_Pin|FLAGB_TX_UHF_Pin|FLAGB_RX_UHF_Pin
-                          |EN_RX_UHF_Pin|ALERT_T_PCB_Pin|P5V_RF_EN_Pin|LED_PE14_Pin
-                          |LED_PE15_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MONITOR_PG_Pin MONITOR_TC_Pin ALERT_T_PA_S_Pin CAN1_FAULT_Pin
                            CAN2_FAULT_Pin */
