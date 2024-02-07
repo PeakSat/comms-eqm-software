@@ -139,9 +139,7 @@ void TransceiverTask::execute(){
         HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
     }
 
-    while (checkTheSPI() != 0) {
-        vTaskDelay(10);
-    };
+    while (checkTheSPI() != 0);
     uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
     // ENABLE TXSFCS (FCS autonomously calculated)
     transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 4), error);
