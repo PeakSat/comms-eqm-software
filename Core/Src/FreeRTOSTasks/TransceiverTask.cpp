@@ -134,8 +134,8 @@ void TransceiverTask::execute(){
     };
     if(txrx)
     {
-        // RECEIVE PINS
-        // ENABLE THE 5V POWER SUPPLY //
+        // RECEIVE PINS //
+        // ENABLE THE 5V POWER SUPPLY
         HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
         // ENABLE THE RX SWITCH
         HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
@@ -143,6 +143,8 @@ void TransceiverTask::execute(){
         HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
     }
     else{
+        // TRANSMIT PINS //
+        // ENABLE THE 5V POWER SUPPLY
         HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
         // ENABLE TX AMP
         HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
@@ -161,7 +163,6 @@ void TransceiverTask::execute(){
     transceiver.spi_write_8(RF09_AUXS, temp | (1 << 6), error );
     transceiver.spi_write_8(RF09_AUXS, temp | (0 << 5), error );
 
-
     setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
     transceiver.chip_reset(error);
     transceiver.setup(error);
@@ -173,14 +174,13 @@ void TransceiverTask::execute(){
     uint16_t currentPacketLength = MaxPacketLength;
     PacketType packet = createRandomPacket(MaxPacketLength);
 
-
-    if (transceiverTask->txrx) {
+    if(transceiverTask->txrx) {
         transceiver.set_state(AT86RF215::RF09, State::RF_TXPREP, error);
         vTaskDelay(pdMS_TO_TICKS(10));
         transceiver.set_state(AT86RF215::RF09, State::RF_RX, error);
         if (transceiver.get_state(AT86RF215::RF09, error) == (AT86RF215::State::RF_RX))
             LOG_DEBUG << " STATE = RX ";
-    } else{
+    }else{
         transceiver.spi_write_8(AT86RF215::RegisterAddress::RF09_PADFE, 2 << 6, error);
         transceiver.TransmitterFrameEnd_flag = true;
     }
@@ -192,16 +192,16 @@ void TransceiverTask::execute(){
         if (transceiverTask->txrx && transceiver.ReceiverFrameEnd_flag)
             {
                 transceiver.ReceiverFrameEnd_flag = false;
-                // Filtering the received packets //
                 low_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLL, error);
                 high_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLH, error);
                 received_length = (high_length_byte << 8) | low_length_byte;
+                // Filtering the received packets //
                 if(transceiver.spi_read_8(AT86RF215::BBC0_FBRXS, error) == packet_id && received_length == MaxPacketLength)
                 {
                     ok_packets++;
                     LOG_DEBUG << "PACKET RECEPTION OK, " << ok_packets;
                 }
-                else {
+                else{
                     wrong_packets++;
                     LOG_DEBUG << "ERROR IN PACKET RECEPTION, " << wrong_packets;
                     for (int i = 0; i < MaxPacketLength; i++)
