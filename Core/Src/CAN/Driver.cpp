@@ -57,11 +57,11 @@ void CAN::initialize(uint8_t fifo_select) {
 
     if(fifo_select==0){
         // Activate the notification for new data in FIFO0 for FDCAN1
-        if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+        if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK) {
             Error_Handler();
         }
         // Activate the notification for new data in FIFO1 for FDCAN2
-        if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0) != HAL_OK) {
+        if (HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK) {
             Error_Handler();
         }
     }else{
