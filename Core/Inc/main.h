@@ -57,6 +57,14 @@ void main_cpp();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define RF_SPI_SCL_Pin GPIO_PIN_2
+#define RF_SPI_SCL_GPIO_Port GPIOE
+#define RF_SPI_SEL_Pin GPIO_PIN_4
+#define RF_SPI_SEL_GPIO_Port GPIOE
+#define RF_SPI_MISO_Pin GPIO_PIN_5
+#define RF_SPI_MISO_GPIO_Port GPIOE
+#define RF_SPI_MOSI_Pin GPIO_PIN_6
+#define RF_SPI_MOSI_GPIO_Port GPIOE
 #define MMC_RST_Pin GPIO_PIN_13
 #define MMC_RST_GPIO_Port GPIOC
 #define RF_IRQ_Pin GPIO_PIN_1

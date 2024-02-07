@@ -2,8 +2,6 @@
 #include "FreeRTOS.h"
 #include "list.h"
 #include "task.h"
-#include "at86rf215.hpp"
-#include "at86rf215config.hpp"
 #include "MCUTemperatureTask.hpp"
 #include "UARTGatekeeperTask.hpp"
 #include "TemperatureSensorsTask.hpp"
@@ -12,6 +10,8 @@
 #include "CANTestTask.hpp"
 #include "WatchdogTask.hpp"
 #include "CurrentSensorsTask.hpp"
+#include "TransceiverTask.hpp"
+#include "TimeKeepingTask.hpp"
 
 template<class T>
 static void vClassTask(void *pvParameters) {
@@ -27,7 +27,9 @@ extern "C" void main_cpp(){
     watchdogTask.emplace();
     mcuTemperatureTask.emplace();
     temperatureSensorsTask.emplace();
-    eMMCTask.emplace();
+//    eMMCTask.emplace();
+    timeKeepingTask.emplace();
+    transceiverTask.emplace();
 //    currentSensorsTask.emplace();
 
     uartGatekeeperTask->createTask();
@@ -36,7 +38,9 @@ extern "C" void main_cpp(){
     watchdogTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask(); // Delay to allow the temperature sensor to be read (it takes 10ms to read the temperature from the sensor
-    eMMCTask->createTask();
+//    eMMCTask->createTask();
+    timeKeepingTask->createTask();
+    transceiverTask->createTask();
 //    currectSensorsTask.emplace();
 
 
@@ -46,14 +50,11 @@ extern "C" void main_cpp(){
     return;
 }
 
-/**
- * @brief This function handles EXTI line[15:10] interrupts.
- */
-//extern "C" void EXTI15_10_IRQHandler(void) {
-//    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
-//
-//    AT86RF215::transceiver.handle_irq();
-//}
+extern "C" [[maybe_unused]] void EXTI1_IRQHandler(void) {
+    HAL_GPIO_EXTI_IRQHandler(RF_IRQ_Pin);
+    transceiverTask->transceiver.handle_irq();
+}
+
 
 extern "C" void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs) {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -117,3 +118,4 @@ extern "C" void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
         }
     }
 }
+
