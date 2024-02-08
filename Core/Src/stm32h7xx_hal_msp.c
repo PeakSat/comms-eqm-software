@@ -99,15 +99,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-    PeriphClkInitStruct.PLL2.PLL2M = 1;
-    PeriphClkInitStruct.PLL2.PLL2N = 12;
-    PeriphClkInitStruct.PLL2.PLL2P = 4;
-    PeriphClkInitStruct.PLL2.PLL2Q = 2;
-    PeriphClkInitStruct.PLL2.PLL2R = 2;
-    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
-    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOMEDIUM;
-    PeriphClkInitStruct.PLL2.PLL2FRACN = 4096;
-    PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2;
+    PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_CLKP;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
@@ -215,6 +207,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     /* FDCAN1 interrupt Init */
     HAL_NVIC_SetPriority(FDCAN1_IT0_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
+    HAL_NVIC_SetPriority(FDCAN1_IT1_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
   /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
   /* USER CODE END FDCAN1_MspInit 1 */
@@ -253,6 +247,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     /* FDCAN2 interrupt Init */
+    HAL_NVIC_SetPriority(FDCAN2_IT0_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
     HAL_NVIC_SetPriority(FDCAN2_IT1_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
   /* USER CODE BEGIN FDCAN2_MspInit 1 */
@@ -289,6 +285,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
 
     /* FDCAN1 interrupt DeInit */
     HAL_NVIC_DisableIRQ(FDCAN1_IT0_IRQn);
+    HAL_NVIC_DisableIRQ(FDCAN1_IT1_IRQn);
   /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
 
   /* USER CODE END FDCAN1_MspDeInit 1 */
@@ -311,6 +308,7 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_5|GPIO_PIN_6);
 
     /* FDCAN2 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
     HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
   /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
 
@@ -487,17 +485,23 @@ void HAL_MMC_MspInit(MMC_HandleTypeDef* hmmc)
     PC12     ------> SDMMC1_CK
     PD2     ------> SDMMC1_CMD
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin
-                          |MCU_MMC_CK_Pin;
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|MCU_MMC_D2_Pin|MCU_MMC_D3_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = MCU_MMC_CMD_Pin;
+    GPIO_InitStruct.Pin = MCU_MMC_CK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
+    HAL_GPIO_Init(MCU_MMC_CK_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = MCU_MMC_CMD_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF12_SDIO1;
     HAL_GPIO_Init(MCU_MMC_CMD_GPIO_Port, &GPIO_InitStruct);
@@ -564,7 +568,15 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SPI4;
-    PeriphClkInitStruct.Spi45ClockSelection = RCC_SPI45CLKSOURCE_D2PCLK1;
+    PeriphClkInitStruct.PLL2.PLL2M = 1;
+    PeriphClkInitStruct.PLL2.PLL2N = 12;
+    PeriphClkInitStruct.PLL2.PLL2P = 2;
+    PeriphClkInitStruct.PLL2.PLL2Q = 3;
+    PeriphClkInitStruct.PLL2.PLL2R = 2;
+    PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
+    PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOMEDIUM;
+    PeriphClkInitStruct.PLL2.PLL2FRACN = 4096;
+    PeriphClkInitStruct.Spi45ClockSelection = RCC_SPI45CLKSOURCE_PLL2;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
@@ -576,11 +588,10 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     __HAL_RCC_GPIOE_CLK_ENABLE();
     /**SPI4 GPIO Configuration
     PE2     ------> SPI4_SCK
-    PE4     ------> SPI4_NSS
     PE5     ------> SPI4_MISO
     PE6     ------> SPI4_MOSI
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6;
+    GPIO_InitStruct.Pin = RF_SPI_SCL_Pin|RF_SPI_MISO_Pin|RF_SPI_MOSI_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -612,11 +623,10 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
 
     /**SPI4 GPIO Configuration
     PE2     ------> SPI4_SCK
-    PE4     ------> SPI4_NSS
     PE5     ------> SPI4_MISO
     PE6     ------> SPI4_MOSI
     */
-    HAL_GPIO_DeInit(GPIOE, GPIO_PIN_2|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6);
+    HAL_GPIO_DeInit(GPIOE, RF_SPI_SCL_Pin|RF_SPI_MISO_Pin|RF_SPI_MOSI_Pin);
 
   /* USER CODE BEGIN SPI4_MspDeInit 1 */
 
@@ -718,6 +728,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
     __HAL_LINKDMA(huart,hdmarx,hdma_uart5_rx);
 
+    /* UART5 interrupt Init */
+    HAL_NVIC_SetPriority(UART5_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(UART5_IRQn);
   /* USER CODE BEGIN UART5_MspInit 1 */
 
   /* USER CODE END UART5_MspInit 1 */
@@ -767,6 +780,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 
     /* UART5 DMA DeInit */
     HAL_DMA_DeInit(huart->hdmarx);
+
+    /* UART5 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(UART5_IRQn);
   /* USER CODE BEGIN UART5_MspDeInit 1 */
 
   /* USER CODE END UART5_MspDeInit 1 */

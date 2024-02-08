@@ -14,6 +14,7 @@ void eMMC_info_show(HAL_MMC_CardInfoTypeDef info){
 void eMMCTask::execute() {
     uint8_t init_status = eMMC::initializeEMMC();
     LOG_DEBUG << "eMMC init status code: "<<init_status;
+//    vTaskSuspend(taskHandle);
     eMMC_info_show(eMMC::checkEMMC());
 
     uint32_t block_address_a = 10;
@@ -21,7 +22,7 @@ void eMMCTask::execute() {
 
     uint8_t data_buff[512];
     for(uint8_t i=0; i<50; i++){
-        data_buff[i] = 'A';
+        data_buff[i] = i;
     }
     HAL_StatusTypeDef  status;
     uint8_t read_data_buff[512];
@@ -30,13 +31,13 @@ void eMMCTask::execute() {
         LOG_DEBUG<<"Reading from block address: "<<block_address_a;
         eMMC::readBlockEMMC(read_data_buff, block_address_a);
         for(uint8_t i=0;i<50;i++){
-            LOG_DEBUG<<read_data_buff[i];
+            LOG_DEBUG<< "I just read: "<< read_data_buff[i];
         }
 
         LOG_DEBUG<<"Reading from block address: "<<block_address_b;
         eMMC::readBlockEMMC(read_data_buff, block_address_b);
         for(uint8_t i=0;i<50;i++){
-            LOG_DEBUG<<read_data_buff[i];
+            LOG_DEBUG<<"I just read: "<< read_data_buff[i];
         }
 
         LOG_DEBUG<<"Writing to block address: "<<block_address_a;
@@ -47,6 +48,7 @@ void eMMCTask::execute() {
         LOG_DEBUG<<"Status: "<<status;
 
         vTaskDelay(pdMS_TO_TICKS(DelayMs));
+//        vTaskSuspend(taskHandle);
     }
 
 }

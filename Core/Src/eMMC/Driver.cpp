@@ -1,10 +1,35 @@
 #include "eMMC/Driver.hpp"
+#include "main.h"
+#include "stm32h7xx_hal_gpio.h"
+#include "stm32h7xx_ll_gpio.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
 
 using namespace eMMC;
 
 extern MMC_HandleTypeDef hmmc1;
 
 uint8_t eMMC::initializeEMMC(){
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    HAL_GPIO_WritePin(MMC_EN_GPIO_Port, MMC_EN_Pin, static_cast<GPIO_PinState>(RESET));
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    HAL_GPIO_WritePin(MEM_SEL_GPIO_Port, MEM_SEL_Pin, static_cast<GPIO_PinState>(SET));
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    HAL_GPIO_WritePin(MMC_RST_GPIO_Port, MMC_RST_Pin, static_cast<GPIO_PinState>(RESET));
+    vTaskDelay(pdMS_TO_TICKS(250));
+
+    hmmc1.Instance = SDMMC1;
+    hmmc1.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
+    hmmc1.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_ENABLE;
+    hmmc1.Init.BusWide = SDMMC_BUS_WIDE_4B;
+    hmmc1.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_ENABLE;
+    hmmc1.Init.ClockDiv = 1;
+    if (HAL_MMC_Init(&hmmc1) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
     if(HAL_MMC_ConfigWideBusOperation(&hmmc1, SDMMC_BUS_WIDE_4B)!=HAL_OK){
         return 1;
     }
@@ -34,4 +59,3 @@ HAL_StatusTypeDef eMMC::readBlockEMMC(uint8_t* read_data, uint32_t block_address
 HAL_StatusTypeDef eMMC::eraseBlocksEMMC(uint32_t block_address_start, uint32_t block_address_end){
     return HAL_MMC_Erase(&hmmc1, block_address_start, block_address_end);
 }
-
