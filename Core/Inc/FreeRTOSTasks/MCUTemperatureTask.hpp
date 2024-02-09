@@ -14,7 +14,7 @@ extern ADC_HandleTypeDef hadc3;
  */
 class MCUTemperatureTask : public Task {
 private:
-    const uint16_t delayMs = 2000;
+    const uint16_t delayMs = 5000;
 
     const static inline uint16_t TaskStackDepth = 1000;
 

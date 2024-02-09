@@ -55,6 +55,7 @@ include_directories(Core/src/FreeRTOSTasks)
 include_directories(Core/Inc/Platform/Parameters)
 include_directories(Core/Inc/Platform)
 include_directories(Core/Inc/Platform/GNSS)
+include_directories(Core/Inc/CAN)
 include_directories(Core/Src/)
 include_directories("Core/lib/FreeRTOS/Source")
 include_directories("Core/lib/FreeRTOS/Source/include")
@@ -89,8 +90,8 @@ file(GLOB_RECURSE DATA_LAYER "Core/lib/ccsds-telemetry-packets/src/*.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/main.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Logger.cpp")
 list(FILTER DATA_LAYER EXCLUDE REGEX "Core/lib/ccsds-telemetry-packets/src/Platform/x86/Logger.cpp")
-#file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/AT86RF215/src/*cpp" "Core/lib/comms-component-drivers/TMP117/src/*cpp")
-file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/TMP117/src/*cpp")
+file(GLOB_RECURSE DRIVERS "Core/lib/comms-component-drivers/AT86RF215/src/*cpp" "Core/lib/comms-component-drivers/TMP117/src/*cpp")
+
 
 set(LINKER_SCRIPT $${CMAKE_SOURCE_DIR}/${linkerScript})
 
