@@ -18,6 +18,7 @@
 #include "CurrentSensorsTask.hpp"
 #include "TransceiverTask.hpp"
 #include "TimeKeepingTask.hpp"
+#include "CurrentSensorsTask.hpp"
 
 template<class T>
 static void vClassTask(void *pvParameters) {
@@ -38,11 +39,10 @@ extern "C" void main_cpp(){
     gnssTask.emplace();
     eMMCTask.emplace();
     timeKeepingTask.emplace();
-    temperatureSensorsTask.emplace();
-//    currentSensorsTask.emplace();
+    currentSensorsTask.emplace();
 
 
-//    currentSensorsTask.emplace();
+    currentSensorsTask.emplace();
 
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
