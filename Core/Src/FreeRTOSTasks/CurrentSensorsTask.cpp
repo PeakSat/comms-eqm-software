@@ -39,6 +39,9 @@ void CurrentSensorsTask::display(const Channel channel,
 
 void CurrentSensorsTask::execute() {
     while (true) {
+
+//        vTaskSuspend(NULL);
+
         Logger::format.precision(Precision);
         channelMeasurement = currentSensor.getMeasurement().value();
 
@@ -46,8 +49,8 @@ void CurrentSensorsTask::execute() {
         display(Channel::RF_UHF, true, true, true, true);
         display(Channel::RF_S, true, true, true, true);
 
-        vTaskResume(TemperatureSensorsTask::temperatureSensorTaskHandle);
-        vTaskSuspend(NULL);
+//        vTaskResume(TemperatureSensorsTask::temperatureSensorTaskHandle);
+//        vTaskSuspend(NULL);
 
         vTaskDelay(DelayMs);
     }

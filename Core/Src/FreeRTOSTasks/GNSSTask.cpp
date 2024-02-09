@@ -5,10 +5,9 @@
 void GNSSTask::execute() {
 //    taskHandle = xTaskGetCurrentTaskHandle();
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_RESET);
 
-    auto message = GNSSReceiver::QueryDOPMask();
-//    HAL_UART_Transmit(&huart5, message.messageBody.data(), message.messageBody.size(), 500);
+    auto message = GNSSReceiver::configureMessageType(static_cast<ConfigurationType>(1), static_cast<Attributes>(1));
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
         uint8_t found_dollar = 0;

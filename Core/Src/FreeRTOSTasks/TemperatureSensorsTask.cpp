@@ -20,9 +20,9 @@ void TemperatureSensorsTask::execute() {
                 LOG_ERROR << "Error getting temperature";
             }
         }
-        vTaskResume(CurrentSensorsTask::currentSensorTaskHandle);
-        vTaskSuspend(NULL);
-
+//        vTaskResume(CurrentSensorsTask::currentSensorTaskHandle);
+//        vTaskSuspend(NULL);
+//
         vTaskDelay(DelayMs);
     }
 }
