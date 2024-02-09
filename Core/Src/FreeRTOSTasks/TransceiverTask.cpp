@@ -35,7 +35,7 @@ void TransceiverTask::setConfiguration(uint16_t pllFrequency09, uint8_t pllChann
     CustomConfig.baseBandEnable09 = true;
     CustomConfig.physicalLayerType09 = PhysicalLayerType::BB_MRFSK;
     CustomConfig. frameCheckSequenceType09 = FrameCheckSequenceType::FCS_32;
-    CustomConfig.txOutPower09 = 5;
+    CustomConfig.txOutPower09 = 0;
     transceiver.config = CustomConfig;
 }
 
@@ -190,38 +190,79 @@ void TransceiverTask::execute(){
     uint8_t low_length_byte = 0, high_length_byte = 0;
     uint16_t received_length = 0;
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
-
-    while (true) {
-        if (transceiverTask->txrx && transceiver.ReceiverFrameEnd_flag)
+    uint32_t current_ticks, elapsed_time, initial_ticks, interval;
+    interval = 10000;
+    initial_ticks = HAL_GetTick();
+    while(true) {
+        current_ticks = HAL_GetTick();
+        elapsed_time = current_ticks - initial_ticks ;
+        if(elapsed_time >= interval)
+        {
+            initial_ticks = current_ticks;
+            LOG_DEBUG << "Timer expired!" ;
+            if(txrx)
             {
-                transceiver.ReceiverFrameEnd_flag = false;
-                low_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLL, error);
-                high_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLH, error);
-                received_length = (high_length_byte << 8) | low_length_byte;
-                // Filtering the received packets //
-                if(transceiver.spi_read_8(AT86RF215::BBC0_FBRXS, error) == packet_id && received_length == MaxPacketLength)
-                {
-                    ok_packets++;
-                    LOG_DEBUG << "PACKET RECEPTION OK, " << ok_packets;
-                }
-                else{
-                    wrong_packets++;
-                    LOG_DEBUG << "ERROR IN PACKET RECEPTION, " << wrong_packets;
-                    for (int i = 0; i < MaxPacketLength; i++)
-                        LOG_DEBUG << transceiver.spi_read_8((AT86RF215::BBC0_FBRXS) + i, error);
-                }
-                transceiver.set_state(AT86RF215::RF09, State::RF_TXPREP, error);
-                vTaskDelay(pdMS_TO_TICKS(10));
-                transceiver.set_state(AT86RF215::RF09, State::RF_RX, error);
+                txrx = 0;
+                LOG_DEBUG << "TX MODE in 5s" ;
+                vTaskDelay(5000);
+                transceiver.TransmitterFrameEnd_flag = true;
+                setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
+                transceiver.chip_reset(error);
+                transceiver.setup(error);
+                txAnalogFrontEnd();
+                txSRandTxFilter();
+                modulationConfig();
+                transceiver.spi_write_8(AT86RF215::RegisterAddress::RF09_PADFE, 2 << 6, error);
+            }
+        }
+        if(transceiverTask->txrx && transceiver.ReceiverFrameEnd_flag)
+        {
+            transceiver.ReceiverFrameEnd_flag = false;
+            // Filtering the received packets //
+            low_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLL,error);
+            high_length_byte = transceiver.spi_read_8(AT86RF215::BBC0_RXFLH,error);
+            received_length = (high_length_byte << 8) | low_length_byte ;
+
+            if(transceiver.spi_read_8(AT86RF215::BBC0_FBRXS, error) == packet_id && received_length == MaxPacketLength){
+                ok_packets++;
+                LOG_DEBUG << "PACKET RECEPTION OK, " << ok_packets ;
+            }
+            else{
+                wrong_packets++;
+                LOG_DEBUG << "ERROR IN PACKET RECEPTION, " <<  wrong_packets;
+                for(int i = 0 ; i < MaxPacketLength; i++)
+                    LOG_DEBUG << transceiver.spi_read_8((AT86RF215::BBC0_FBRXS) + i, error) ;
             }
 
-        if (transceiverTask->txrx == false && transceiver.TransmitterFrameEnd_flag) {
+            transceiver.set_state(AT86RF215::RF09, State::RF_TXPREP, error);
+            vTaskDelay(pdMS_TO_TICKS(10));
+            transceiver.set_state(AT86RF215::RF09, State::RF_RX, error);
+        }
+        if(transceiverTask->txrx == false && transceiver.TransmitterFrameEnd_flag)
+        {
             sent_packets++;
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
             vTaskDelay(pdMS_TO_TICKS(200));
             transceiver.set_state(AT86RF215::RF09, State::RF_TX, error);
             transceiver.TransmitterFrameEnd_flag = false;
-            LOG_DEBUG << "PACKET IS SENT " << sent_packets;
+            LOG_DEBUG << "PACKET IS SENT " << sent_packets ;
+            if(sent_packets == 2)
+            {
+                sent_packets = 0;
+                setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
+                transceiver.chip_reset(error);
+                transceiver.setup(error);
+                txAnalogFrontEnd();
+                txSRandTxFilter();
+                modulationConfig();
+                receiverConfig(true);
+                transceiver.set_state(AT86RF215::RF09, State::RF_TXPREP, error);
+                vTaskDelay(pdMS_TO_TICKS(10));
+                transceiver.set_state(AT86RF215::RF09, State::RF_RX, error);
+                if (transceiver.get_state(AT86RF215::RF09, error) == (AT86RF215::State::RF_RX))
+                    LOG_DEBUG << " STATE = RX ";
+                txrx = 1;
+            }
         }
     }
 }
