@@ -185,7 +185,7 @@ void TransceiverTask::execute(){
     uint16_t received_length = 0;
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
-    interval = 30000;
+    interval = 60000;
     initial_ticks = HAL_GetTick();
     while(true) {
         current_ticks = HAL_GetTick();
