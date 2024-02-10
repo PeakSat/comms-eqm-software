@@ -20,6 +20,8 @@
 #include "TimeKeepingTask.hpp"
 #include "CurrentSensorsTask.hpp"
 
+extern UART_HandleTypeDef huart5;
+
 template<class T>
 static void vClassTask(void *pvParameters) {
     (static_cast<T *>(pvParameters))->execute();
@@ -32,7 +34,7 @@ extern "C" void main_cpp(){
     canGatekeeperTask.emplace();
     canTestTask.emplace();
     watchdogTask.emplace();
-    transceiverTask.emplace();
+//    transceiverTask.emplace();
     mcuTemperatureTask.emplace();
     temperatureSensorsTask.emplace();
     gnssTask.emplace();
@@ -44,7 +46,7 @@ extern "C" void main_cpp(){
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
-    transceiverTask->createTask();
+//    transceiverTask->createTask();
     watchdogTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
@@ -136,10 +138,14 @@ extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t S
     // of the TC Handling Task
     BaseType_t xHigherPriorityTaskWoken;
 
+    // Reset the DMA to receive the next chunk of data
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->incomingMessage, 256);
+
     xHigherPriorityTaskWoken = pdFALSE;
     xTaskNotifyFromISR(gnssTask->taskHandle, 0, eNoAction,  &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
 
-    // Reset the DMA to receive the next chunk of data
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->incomingMessage, 256);
+extern "C" [[maybe_unused]] void UART5_IRQHandler(void) {
+    HAL_UART_IRQHandler(&huart5);
 }
