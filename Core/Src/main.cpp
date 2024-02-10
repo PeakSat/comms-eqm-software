@@ -12,6 +12,7 @@
 #include "CurrentSensorsTask.hpp"
 #include "TransceiverTask.hpp"
 #include "TimeKeepingTask.hpp"
+#include "DummyTask.h"
 
 template<class T>
 static void vClassTask(void *pvParameters) {
@@ -25,23 +26,24 @@ extern "C" void main_cpp(){
     canGatekeeperTask.emplace();
     canTestTask.emplace();
     watchdogTask.emplace();
-    transceiverTask.emplace();
+//    transceiverTask.emplace();
     mcuTemperatureTask.emplace();
+//    eMMCTask.emplace();
     temperatureSensorsTask.emplace();
-    eMMCTask.emplace();
     timeKeepingTask.emplace();
-
+    dummyTask.emplace();
 //    currentSensorsTask.emplace();
 
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
-    transceiverTask->createTask();
+//    transceiverTask->createTask();
     watchdogTask->createTask();
-    temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask(); // Delay to allow the temperature sensor to be read (it takes 10ms to read the temperature from the sensor
-    eMMCTask->createTask();
+//    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
     timeKeepingTask->createTask();
+    dummyTask->createTask();
 //    currectSensorsTask.emplace();
 
 
