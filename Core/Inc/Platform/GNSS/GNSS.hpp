@@ -56,7 +56,7 @@ public:
 
     static GNSSMessage configureSAEE(EnableSAEE enable, Attributes attributes);
 
-    static GNSSMessage configureExtendedNMEAMesaageInterval(const etl::vector<uint8_t, 12>& intervals, Attributes attributes);
+    static GNSSMessage configureExtendedNMEAMessageInterval(const etl::vector<uint8_t, 12>& intervals, Attributes attributes);
 
     static GNSSMessage configureInterferenceDetection(InterferenceDetectControl control, Attributes attributes);
 

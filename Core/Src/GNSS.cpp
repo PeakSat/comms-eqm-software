@@ -190,7 +190,7 @@ GNSSMessage GNSSReceiver::configureSAEE(EnableSAEE enable, Attributes attributes
 }
 
 GNSSMessage
-GNSSReceiver::configureExtendedNMEAMesaageInterval(const etl::vector<uint8_t, 12>& intervals, Attributes attributes) {
+GNSSReceiver::configureExtendedNMEAMessageInterval(const etl::vector<uint8_t, 12>& intervals, Attributes attributes) {
     Payload payload;
     for (uint8_t interval: intervals) {
         payload.push_back(interval);
