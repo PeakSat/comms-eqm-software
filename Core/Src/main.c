@@ -51,6 +51,8 @@ I2C_HandleTypeDef hi2c2;
 
 IWDG_HandleTypeDef hiwdg1;
 
+RTC_HandleTypeDef hrtc;
+
 MMC_HandleTypeDef hmmc1;
 
 SPI_HandleTypeDef hspi4;
@@ -78,6 +80,7 @@ static void MX_UART5_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_IWDG1_Init(void);
+static void MX_RTC_Init(void);
 static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -125,11 +128,12 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-//  MX_SDMMC1_MMC_Init();
+  MX_SDMMC1_MMC_Init();
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_IWDG1_Init();
+  MX_RTC_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -539,6 +543,42 @@ static void MX_IWDG1_Init(void)
 }
 
 /**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
+
+}
+
+/**
   * @brief SDMMC1 Initialization Function
   * @param None
   * @retval None
@@ -725,7 +765,7 @@ static void MX_DMA_Init(void)
 
   /* DMA interrupt init */
   /* DMA1_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
 
 }

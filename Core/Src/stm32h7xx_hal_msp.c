@@ -110,7 +110,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 
     /* ADC3 DMA Init */
     /* ADC3 Init */
-    hdma_adc3.Instance = DMA1_Stream0;
+    hdma_adc3.Instance = DMA1_Stream1;
     hdma_adc3.Init.Request = DMA_REQUEST_ADC3;
     hdma_adc3.Init.Direction = DMA_PERIPH_TO_MEMORY;
     hdma_adc3.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -448,6 +448,61 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
 }
 
 /**
+* @brief RTC MSP Initialization
+* This function configures the hardware resources used in this example
+* @param hrtc: RTC handle pointer
+* @retval None
+*/
+void HAL_RTC_MspInit(RTC_HandleTypeDef* hrtc)
+{
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+  if(hrtc->Instance==RTC)
+  {
+  /* USER CODE BEGIN RTC_MspInit 0 */
+
+  /* USER CODE END RTC_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    /* Peripheral clock enable */
+    __HAL_RCC_RTC_ENABLE();
+  /* USER CODE BEGIN RTC_MspInit 1 */
+
+  /* USER CODE END RTC_MspInit 1 */
+  }
+
+}
+
+/**
+* @brief RTC MSP De-Initialization
+* This function freeze the hardware resources used in this example
+* @param hrtc: RTC handle pointer
+* @retval None
+*/
+void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)
+{
+  if(hrtc->Instance==RTC)
+  {
+  /* USER CODE BEGIN RTC_MspDeInit 0 */
+
+  /* USER CODE END RTC_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_RTC_DISABLE();
+  /* USER CODE BEGIN RTC_MspDeInit 1 */
+
+  /* USER CODE END RTC_MspDeInit 1 */
+  }
+
+}
+
+/**
 * @brief MMC MSP Initialization
 * This function configures the hardware resources used in this example
 * @param hmmc: MMC handle pointer
@@ -711,7 +766,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
     /* UART5 DMA Init */
     /* UART5_RX Init */
-    hdma_uart5_rx.Instance = DMA1_Stream1;
+    hdma_uart5_rx.Instance = DMA1_Stream0;
     hdma_uart5_rx.Init.Request = DMA_REQUEST_UART5_RX;
     hdma_uart5_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
     hdma_uart5_rx.Init.PeriphInc = DMA_PINC_DISABLE;
