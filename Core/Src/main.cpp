@@ -28,8 +28,8 @@ extern "C" void main_cpp(){
     watchdogTask.emplace();
 //    transceiverTask.emplace();
     mcuTemperatureTask.emplace();
-    eMMCTask.emplace();
-//    temperatureSensorsTask.emplace();
+//    eMMCTask.emplace();
+    temperatureSensorsTask.emplace();
     timeKeepingTask.emplace();
     dummyTask.emplace();
 //    currentSensorsTask.emplace();
@@ -40,8 +40,8 @@ extern "C" void main_cpp(){
 //    transceiverTask->createTask();
     watchdogTask->createTask();
     mcuTemperatureTask->createTask(); // Delay to allow the temperature sensor to be read (it takes 10ms to read the temperature from the sensor
-    eMMCTask->createTask();
-//    temperatureSensorsTask->createTask();
+//    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
     timeKeepingTask->createTask();
     dummyTask->createTask();
 //    currectSensorsTask.emplace();
