@@ -128,6 +128,7 @@ void TransceiverTask::modulationConfig(){
 }
 
 void TransceiverTask::execute(){
+
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
     vTaskDelay(pdMS_TO_TICKS(1000));
 
@@ -137,6 +138,7 @@ void TransceiverTask::execute(){
     };
     // RECEIVE PINS //
     // ENABLE THE 5V POWER SUPPLY
+
     // ENABLE THE RX SWITCH
     HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
     vTaskDelay(pdMS_TO_TICKS(1000));
@@ -186,9 +188,8 @@ void TransceiverTask::execute(){
     uint16_t received_length = 0;
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
-    interval = 60000;
+    interval = 30000;
     initial_ticks = HAL_GetTick();
-
     while(true) {
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
@@ -200,20 +201,11 @@ void TransceiverTask::execute(){
             {
                 txrx = 1;
                 LOG_DEBUG << "waiting for RX mode" ;
+                HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+
                 setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
                 transceiver.chip_reset(error);
                 transceiver.setup(error);
-                reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
-                // ENABLE TXSFCS (FCS autonomously calculated)
-                transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 4), error);
-                // ENABLE FCS FILTER
-                transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 6), error);
-                reg = transceiver.spi_read_8(AT86RF215::BBC0_FSKC2, error);
-                // DISABLE THE INTERLEAVING
-                transceiver.spi_write_8(AT86RF215::BBC0_PC, reg & 0, error);
-                temp = transceiver.spi_read_8(RF09_AUXS, error);
-                transceiver.spi_write_8(RF09_AUXS, temp | (1 << 6), error );
-                transceiver.spi_write_8(RF09_AUXS, temp | (0 << 5), error );
                 txAnalogFrontEnd();
                 txSRandTxFilter();
                 modulationConfig();

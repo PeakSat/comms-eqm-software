@@ -27,7 +27,7 @@ void CANTestTask::execute() {
             CAN::Application::createLogMessage(CAN::NodeIDs::OBC, false, testPayload2.data(), false);
         }
         xTaskNotify(canGatekeeperTask->taskHandle, 0, eNoAction);
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(3000));
     }
 
 }
