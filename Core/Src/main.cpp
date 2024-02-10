@@ -42,12 +42,11 @@ extern "C" void main_cpp(){
     timeKeepingTask.emplace();
 //    currentSensorsTask.emplace();
 
-
+    watchdogTask->createTask();
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
     transceiverTask->createTask();
-    watchdogTask->createTask();
     eMMCTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();

@@ -25,7 +25,7 @@ private:
      * This constant represents the duration during which the watchdog counter should
      * be refreshed to prevent a reset. Since the maximum reload time is 16000ms, the RefreshTime is set to 12000ms.
      */
-    const uint16_t RefreshTime = 12000;
+    const uint16_t RefreshTime = 8000;
 
     static constexpr uint16_t TaskStackDepth = 1000;
 
