@@ -33,12 +33,12 @@ extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
     canGatekeeperTask.emplace();
     canTestTask.emplace();
+    eMMCTask.emplace();
     watchdogTask.emplace();
-//    transceiverTask.emplace();
-//    mcuTemperatureTask.emplace();
-//    temperatureSensorsTask.emplace();
+    transceiverTask.emplace();
+    mcuTemperatureTask.emplace();
+    temperatureSensorsTask.emplace();
     gnssTask.emplace();
-//    eMMCTask.emplace();
     timeKeepingTask.emplace();
 //    currentSensorsTask.emplace();
 
@@ -46,12 +46,12 @@ extern "C" void main_cpp(){
     uartGatekeeperTask->createTask();
     canGatekeeperTask->createTask();
     canTestTask->createTask();
-//    transceiverTask->createTask();
+    transceiverTask->createTask();
     watchdogTask->createTask();
-//    temperatureSensorsTask->createTask();
-//    mcuTemperatureTask->createTask();
+    eMMCTask->createTask();
+    temperatureSensorsTask->createTask();
+    mcuTemperatureTask->createTask();
     gnssTask->createTask();
-//    eMMCTask->createTask();
     timeKeepingTask->createTask();
 //    currentSensorsTask->createTask();
 
