@@ -187,6 +187,7 @@ void TransceiverTask::execute(){
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
     interval = 60000;
     initial_ticks = HAL_GetTick();
+
     while(true) {
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
@@ -201,7 +202,7 @@ void TransceiverTask::execute(){
                 setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
                 transceiver.chip_reset(error);
                 transceiver.setup(error);
-                uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
+                reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
                 // ENABLE TXSFCS (FCS autonomously calculated)
                 transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 4), error);
                 // ENABLE FCS FILTER
@@ -209,7 +210,7 @@ void TransceiverTask::execute(){
                 reg = transceiver.spi_read_8(AT86RF215::BBC0_FSKC2, error);
                 // DISABLE THE INTERLEAVING
                 transceiver.spi_write_8(AT86RF215::BBC0_PC, reg & 0, error);
-                uint8_t temp = transceiver.spi_read_8(RF09_AUXS, error);
+                temp = transceiver.spi_read_8(RF09_AUXS, error);
                 transceiver.spi_write_8(RF09_AUXS, temp | (1 << 6), error );
                 transceiver.spi_write_8(RF09_AUXS, temp | (0 << 5), error );
                 txAnalogFrontEnd();
