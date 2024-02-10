@@ -28,8 +28,18 @@ inline const uint8_t MaxTickCountStringSize = 10;
 
 inline String<LogSource::MaximumLettersInSubsystemName> LogSource::currentSubsystem = "COMMS";
 
-inline const uint8_t CANMessageSize = 64;
+inline const uint8_t GNSSQueueSize = 64;
 
-inline const uint32_t CANIdentifier = CAN::NodeIDs::COMMS;
+/**
+ * The maximum size for the data field of a GNSS Payload.
+ */
+inline const uint16_t GNSSPayloadSize = 1024;
+
+/**
+ * The maximum size for the data field of a GNSS Message.
+ */
+inline const uint16_t GNSSMessageSize = GNSSPayloadSize + 16;
+
+inline const uint8_t CANMessageSize = 64;
 
 #endif //STM32H7A3ZIQSETUP_COMMS_DEFINITIONS_H

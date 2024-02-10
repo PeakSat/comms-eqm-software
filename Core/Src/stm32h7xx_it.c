@@ -59,7 +59,6 @@ extern DMA_HandleTypeDef hdma_adc3;
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern DMA_HandleTypeDef hdma_uart5_rx;
-extern UART_HandleTypeDef huart5;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -246,20 +245,6 @@ void FDCAN2_IT1_IRQHandler(void)
   /* USER CODE BEGIN FDCAN2_IT1_IRQn 1 */
 
   /* USER CODE END FDCAN2_IT1_IRQn 1 */
-}
-
-/**
-  * @brief This function handles UART5 global interrupt.
-  */
-void UART5_IRQHandler(void)
-{
-  /* USER CODE BEGIN UART5_IRQn 0 */
-
-  /* USER CODE END UART5_IRQn 0 */
-  HAL_UART_IRQHandler(&huart5);
-  /* USER CODE BEGIN UART5_IRQn 1 */
-
-  /* USER CODE END UART5_IRQn 1 */
 }
 
 /**

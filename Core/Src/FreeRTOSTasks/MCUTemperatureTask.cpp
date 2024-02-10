@@ -6,10 +6,6 @@ void MCUTemperatureTask::execute() {
     AFEC0_ConversionStart();
     #endif
 
-
-
-
-
     while (true) {
         #ifdef STM32
         if (HAL_ADCEx_Calibration_Start(&hadc3, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED) != HAL_OK)
