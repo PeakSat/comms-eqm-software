@@ -7,9 +7,12 @@ void GNSSTask::execute() {
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_SET);
     GNSSDefinitions::BaudRate baud = GNSSDefinitions::BaudRate::Option115200;
-//    auto message = GNSSReceiver::configureSerialPort(0, baud, static_cast<Attributes>(0));
+//    auto message = GNSSReceiver::configureNMEAStringInterval()
 //    HAL_UART_Transmit(&huart5, message.messageBody.)
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 256);
+//    uint8_t messageTralala[] = { 0xA0, 0xA1, 0x00, 0x07, 0x64, 0x3B, 0x47, 0x47, 0x41, 0x0A, 0x01, 0x1E, 0x0D, 0x0A };
+
+//    HAL_UART_Transmit(&huart5, messageTralala, 11, HAL_MAX_DELAY);
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 512);
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
 
@@ -19,8 +22,7 @@ void GNSSTask::execute() {
             GNSSMessage.push_back(byte);
         }
         LOG_DEBUG << GNSSMessage.c_str() << "\n";
-        new(&(incomingMessage)) uint8_t[256];
-//        HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->incomingMessage, 256);
+        new(&(incomingMessage)) uint8_t[512];
     }
 }
 

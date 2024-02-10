@@ -245,6 +245,7 @@ GNSSMessage GNSSReceiver::configureGNSSNavigationMode(NavigationMode mode, Attri
 GNSSMessage
 GNSSReceiver::configureGNSSConstellationTypeForNavigationSolution(uint8_t constellationType, Attributes attributes) {
     Payload payload;
+    payload.push_back(0x00);
     payload.push_back(constellationType);
     payload.push_back(static_cast<uint8_t>(attributes));
     return GNSSMessage{GNSSMessagesSubID::ConfigureGNSSConstellationTypeForNavigationSolution,
