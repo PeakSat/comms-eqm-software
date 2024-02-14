@@ -130,9 +130,11 @@ void TransceiverTask::modulationConfig(){
 void TransceiverTask::execute(){
 
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
+    LOG_DEBUG << "RF 5V ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
 
     HAL_GPIO_WritePin(RF_RST_GPIO_Port, RF_RST_Pin, GPIO_PIN_SET);
+    LOG_DEBUG << "RF RESET ENABLED " ;
     while (checkTheSPI() != 0) {
         vTaskDelay(10);
     };
@@ -141,13 +143,16 @@ void TransceiverTask::execute(){
 
     // ENABLE THE RX SWITCH
     HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
+    LOG_DEBUG << "RX SWITCH ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
     // ENABLE THE RX AMP
     HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
+    LOG_DEBUG << "RX AMP ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
     // TRANSMIT PINS //
     // ENABLE TX AMP
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
+    LOG_DEBUG << "TX AMP ENABLED " ;
 
 
     uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
@@ -202,7 +207,6 @@ void TransceiverTask::execute(){
                 txrx = 1;
                 LOG_DEBUG << "waiting for RX mode" ;
                 HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
-
                 setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
                 transceiver.chip_reset(error);
                 transceiver.setup(error);
