@@ -47,7 +47,7 @@ extern "C" void main_cpp(){
     canGatekeeperTask->createTask();
     canTestTask->createTask();
     transceiverTask->createTask();
-//    eMMCTask->createTask();
+    eMMCTask->createTask();
     temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
