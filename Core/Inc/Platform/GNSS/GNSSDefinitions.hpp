@@ -6,7 +6,7 @@ namespace GNSSDefinitions {
 
     typedef etl::vector<uint8_t, GNSSPayloadSize> Payload;
 
-    enum GNSSMessages : uint8_t {
+    enum GNSSMessagesID : uint8_t {
         SystemRestart = 0x1,
         QuerySoftwareVersion = 0x2,
         QuerySoftwareCRC = 0x3,

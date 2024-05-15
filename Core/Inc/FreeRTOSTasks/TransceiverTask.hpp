@@ -66,7 +66,6 @@ public:
     void txAnalogFrontEnd();
 
 
-
     TransceiverTask() : Task("Transceiver signal transmission") {
     }
 

@@ -75,7 +75,7 @@ static void MX_SPI4_Init(void);
 static void MX_UART4_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_ADC3_Init(void);
-static void MX_SDMMC1_MMC_Init(void);
+//static void MX_SDMMC1_MMC_Init(void);
 static void MX_UART5_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C2_Init(void);

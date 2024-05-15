@@ -1,51 +1,60 @@
 #pragma once
 
 #include "Task.hpp"
-//#include "minmea.h"
 #include "COMMS_Definitions.hpp"
 #include "queue.h"
+#include "GNSSDefinitions.hpp"
+#include "GNSS.hpp"
+#include "GNSSMessage.hpp"
+
+using namespace GNSSDefinitions;
 
 extern DMA_HandleTypeDef hdma_uart5_rx;
 extern UART_HandleTypeDef huart5;
 
+
 class GNSSTask : public Task {
 public:
     /**
-     * @see ParameterStatisticsService
-     */
-    void execute();
-
-    const static inline uint16_t TaskStackDepth = 1200;
-
+     * Stack Parameters
+    */
+    const static inline uint16_t TaskStackDepth = 5000;
     StackType_t taskStack[TaskStackDepth];
 
+
     /**
-* Buffer that holds the data of the DMA
-*/
-    typedef etl::string<GNSSMessageSize> GNSSMessage;
-    uint8_t incomingMessage[512];
-//    uint16_t incomingMessageSize = 0;
+     * objects of necessary classes
+     */
+    static GNSSReceiver gnssReceiver;
+
+    /**
+    * Variables for the Receive Operation from GNSS
+    */
+    uint16_t dmaRxSize;
+    etl::vector<uint8_t, 1024> rxDmaBuffer;
+    uint8_t end_of_frame_flag = 0;
+    uint16_t counter = 0;
+
+
     /**
      * Queue for incoming messages
      */
-    uint8_t messageQueueStorageArea[GNSSQueueSize * sizeof(GNSSMessage)];
-    StaticQueue_t gnssQueue;
-    QueueHandle_t gnssQueueHandle;
-
-    GNSSTask() : Task("GNSS Logging Task") {
-        gnssQueueHandle = xQueueCreateStatic(GNSSQueueSize, sizeof(GNSSMessage),
-                                             messageQueueStorageArea,
-                                             &gnssQueue);
-        configASSERT(gnssQueueHandle);
-
-        // disabling the half buffer interrupt //
-        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
-        // disabling the full buffer interrupt //
-        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
-    }
 
     /**
-     * Create freeRTOS Task
+     * GNSS Task Constructor
+     */
+    GNSSTask() : Task("GNSS Logging Task") {
+        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
+        // disabling the full buffer interrupt
+        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
+    }
+    uint8_t checkTheConnection();
+    /**
+     * execute
+     */
+    void execute();
+    /**
+     * Task Creation
      */
     void createTask() {
         taskHandle = xTaskCreateStatic(vClassTask < GNSSTask > , this->TaskName,
@@ -55,5 +64,4 @@ public:
 private:
 
 };
-
 inline std::optional<GNSSTask> gnssTask;

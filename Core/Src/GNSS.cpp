@@ -7,21 +7,21 @@ GNSSMessage GNSSReceiver::configureSerialPort(uint8_t COMPort, BaudRate baudRate
     payload.push_back(COMPort);
     payload.push_back(static_cast<uint8_t>(baudRate));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigureSerialPort, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigureSerialPort, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::configureMessageType(ConfigurationType type, Attributes attributes) {
     Payload payload;
     payload.push_back(static_cast<uint8_t>(type));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigureMessageType, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigureMessageType, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::configureSystemPowerMode(PowerMode mode, Attributes attributes) {
     Payload payload;
     payload.push_back(static_cast<uint8_t>(mode));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigurePowerMode, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigurePowerMode, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -29,7 +29,7 @@ GNSSMessage GNSSReceiver::configureSystemPositionRate(uint8_t rate, Attributes a
     Payload payload;
     payload.push_back(rate);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigurePositionUpdateRate, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigurePositionUpdateRate, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -45,7 +45,7 @@ GNSSReceiver::configureDOPMask(DOPModeSelect mode, uint16_t PDOPvalue, uint16_t 
     payload.push_back((GDOPvalue >> 8) & 0xFF);
     payload.push_back(GDOPvalue & 0xFF);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigureDOPMask, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigureDOPMask, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage
@@ -56,7 +56,7 @@ GNSSReceiver::configureElevationAndCNRMask(ElevationAndCNRModeSelect mode, uint8
     payload.push_back(elevationMask);
     payload.push_back(CNRMask);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigureElevationAndCNRMask, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigureElevationAndCNRMask, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -64,7 +64,7 @@ GNSSMessage GNSSReceiver::configurePositionPinning(PositionPinning positionPinni
     Payload payload;
     payload.push_back(static_cast<uint8_t>(positionPinning));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigurePositionPinning, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigurePositionPinning, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -84,7 +84,7 @@ GNSSReceiver::configurePositionPinningParameters(uint16_t pinningSpeed, uint16_t
     payload.push_back((unpinningDistance >> 8) & 0xFF);
     payload.push_back(unpinningDistance & 0xFF);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigurePositionPinningParameters, static_cast<uint16_t>(payload.size()),
+    return GNSSMessage{GNSSMessagesID::ConfigurePositionPinningParameters, static_cast<uint16_t>(payload.size()),
                        payload};
 }
 
@@ -95,7 +95,7 @@ GNSSMessage GNSSReceiver::configure1PPSCableDelay(uint32_t cableDelay, Attribute
     payload.push_back((cableDelay >> 8) & 0xFF);
     payload.push_back(cableDelay & 0xFF);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::Configure1PPSCableDelay, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::Configure1PPSCableDelay, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -103,7 +103,7 @@ GNSSMessage GNSSReceiver::configureNMEATalkerID(TalkerIDType type, Attributes at
     Payload payload;
     payload.push_back(static_cast<uint8_t>(type));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::ConfigureNMEATalkerID, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::ConfigureNMEATalkerID, static_cast<uint16_t>(payload.size()), payload};
 
 }
 
@@ -123,7 +123,7 @@ GNSSReceiver::configure1PPSTiming(TimingMode mode, uint16_t surveyLength, uint16
     payload.push_back((altitude >> 8) & 0xFF);
     payload.push_back(altitude & 0xFF);
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::Configure1PPSTiming, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::Configure1PPSTiming, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::configure1PPSOutputMode(OutputMode mode, AlignSource source, Attributes attributes) {
@@ -131,7 +131,7 @@ GNSSMessage GNSSReceiver::configure1PPSOutputMode(OutputMode mode, AlignSource s
     payload.push_back(static_cast<uint8_t>(mode));
     payload.push_back(static_cast<uint8_t>(source));
     payload.push_back(static_cast<uint8_t>(attributes));
-    return GNSSMessage{GNSSMessages::Configure1PPSOutputMode, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::Configure1PPSOutputMode, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage
@@ -361,46 +361,47 @@ GNSSMessage GNSSReceiver::SoftwareImageDownloadUsingExternalLoader(BaudRate baud
 
 GNSSMessage GNSSReceiver::querySoftwareVersion(SoftwareType softwareType) {
     Payload payload ;
+    payload.push_back(static_cast<uint8_t>(GNSSMessagesID::QuerySoftwareVersion));
     payload.push_back(static_cast<uint8_t>(softwareType));
-    return GNSSMessage{GNSSMessages::QuerySoftwareVersion, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::QuerySoftwareVersion, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::querySoftwareCRC(SoftwareType softwareType) {
     Payload payload;
     payload.push_back(static_cast<uint8_t>(softwareType));
-    return GNSSMessage{GNSSMessages::QuerySoftwareCRC, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::QuerySoftwareCRC, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::queryPositionUpdateRate() {
-    return GNSSMessage{GNSSMessages::QueryPositionUpdateRate, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryPositionUpdateRate, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::queryPowerMode() {
-    return GNSSMessage{GNSSMessages::QueryPowerMode, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryPowerMode, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::QueryDOPMask() {
-    return GNSSMessage{GNSSMessages::QueryDOPMask, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryDOPMask, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::QueryElevationandCNRMask() {
-    return GNSSMessage{GNSSMessages::QueryElevationAndCNRMask, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryElevationAndCNRMask, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::queryPositionPinning() {
-    return GNSSMessage{GNSSMessages::QueryPositionPinning, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryPositionPinning, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::query1PPSTiming() {
-    return GNSSMessage{GNSSMessages::Query1PPSTiming, 0, {}};
+    return GNSSMessage{GNSSMessagesID::Query1PPSTiming, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::query1PPSCableDelay() {
-    return GNSSMessage{GNSSMessages::Query1PPSCableDelay, 0, {}};
+    return GNSSMessage{GNSSMessagesID::Query1PPSCableDelay, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::queryNMEATalkerID() {
-    return GNSSMessage{GNSSMessages::QueryNMEATalkID, 0, {}};
+    return GNSSMessage{GNSSMessagesID::QueryNMEATalkID, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::querySBASStatus() {
@@ -490,13 +491,13 @@ GNSSMessage GNSSReceiver::queryRequestedNMEAStringInterval() {
 GNSSMessage GNSSReceiver::getGPSEphemeris(uint8_t SV) {
     Payload payload;
     payload.push_back(SV);
-    return GNSSMessage{GNSSMessages::GetGPSEphemeris, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::GetGPSEphemeris, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::getGLONASSEphemeris(uint8_t SV) {
     Payload payload;
     payload.push_back(SV);
-    return GNSSMessage{GNSSMessages::GetGLONASSEphemeris, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::GetGLONASSEphemeris, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::setGLONASSEphemeris(uint8_t slotNumber, uint8_t kNumber, std::vector<uint8_t> ephemerisData0,
@@ -517,15 +518,17 @@ GNSSMessage GNSSReceiver::setGLONASSEphemeris(uint8_t slotNumber, uint8_t kNumbe
     for (uint8_t byte: ephemerisData3) {
         payload.push_back(byte);
     }
-    return GNSSMessage{GNSSMessages::SetGLONASSEphemeris, static_cast<uint16_t>(payload.size()), payload};
+    return GNSSMessage{GNSSMessagesID::SetGLONASSEphemeris, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSMessage GNSSReceiver::getGLONASSTimeCorrectionParameters() {
-    return GNSSMessage{GNSSMessages::GetGLONASSTimeCorrectionParameters, 0, {}};
+    return GNSSMessage{GNSSMessagesID::GetGLONASSTimeCorrectionParameters, 0, {}};
 }
 
 GNSSMessage GNSSReceiver::setFactoryDefaults() {
-    return GNSSMessage{GNSSMessages::SetFactoryDefaults, 1, {1}};
+    return GNSSMessage{GNSSMessagesID::SetFactoryDefaults, 1, {1}};
 }
+
+GNSSReceiver::GNSSReceiver() = default;
 
 

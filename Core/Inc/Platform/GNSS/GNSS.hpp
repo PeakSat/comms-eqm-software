@@ -10,7 +10,6 @@ using namespace GNSSDefinitions;
 class GNSSReceiver {
 public:
     GNSSReceiver();
-
     // Configure
     static GNSSMessage configureSerialPort(uint8_t COMPort, BaudRate baudRate, Attributes attributes);
 
