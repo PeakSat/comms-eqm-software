@@ -33,22 +33,14 @@ public:
     uint16_t dmaRxSize;
     etl::vector<uint8_t, 1024> rxDmaBuffer;
     uint8_t end_of_frame_flag = 0;
-    uint16_t counter = 0;
-
-
-    /**
-     * Queue for incoming messages
-     */
-
+    uint16_t ISRcounter = 0;
     /**
      * GNSS Task Constructor
      */
     GNSSTask() : Task("GNSS Logging Task") {
-        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
-        // disabling the full buffer interrupt
-        __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
+
     }
-    uint8_t checkTheConnection();
+    uint8_t sendDataToGNSS();
     /**
      * execute
      */
