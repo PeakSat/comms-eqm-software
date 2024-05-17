@@ -1,5 +1,7 @@
 #include "GNSSTask.hpp"
 #include "GNSS.hpp"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 uint8_t GNSSTask::sendDataToGNSS() {
     //GNSSMessage gnssMessage;
@@ -11,10 +13,9 @@ uint8_t GNSSTask::sendDataToGNSS() {
 */
 //    HAL_UART_Transmit(&huart5, gnssMessage.messageBody.data(),gnssMessage.messageBody.size(), 1000);
     uint8_t tx_data[] = {0xA0, 0xA1, 0x00, 0x02, 0x02, 0x00, 0x02, 0x0D, 0x0A};
-    for(int i = 0 ; i < 9; i++)
-        LOG_DEBUG << tx_data[i];
+//    for(int i = 0 ; i < 9; i++)
+//        LOG_DEBUG << tx_data[i];
     HAL_UART_Transmit(&huart5, tx_data,9, 1000);
-
     return gnssTask->end_of_frame_flag;
 }
 
@@ -24,7 +25,6 @@ void GNSSTask::execute() {
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_SET);
 
-
     // variables
     etl::vector<uint8_t, 512> message_copy;
     etl::string<512> message_copy_string;
@@ -32,30 +32,23 @@ void GNSSTask::execute() {
     __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_HT);
     // disabling the full buffer interrupt
     __HAL_DMA_DISABLE_IT(&hdma_uart5_rx, DMA_IT_TC);
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, rxDmaBuffer.data(), 1024);
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, rxDmaBuffer.data(), 512);
 
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
-        if(ISRcounter % 10 == 0 && ISRcounter != 0)
+        if(true)
         {
-            sendDataToGNSS();
-            ISRcounter = 0;
-        }
-        LOG_DEBUG << "counter = "  << gnssTask->ISRcounter;
-        LOG_DEBUG << "size = " << gnssTask->dmaRxSize;
-        if(gnssTask->dmaRxSize == 30){
-            for(uint16_t i = 0; i < gnssTask->dmaRxSize; i++)
-            {
-//               message_copy.push_back(gnssTask->rxDmaBuffer[i]);
-//               message_copy_string.push_back(gnssTask->rxDmaBuffer[i]);
-                LOG_DEBUG << gnssTask->rxDmaBuffer[i];
+            LOG_DEBUG << "counter = "  << gnssTask->ISRcounter;
+            LOG_DEBUG << "size = " << gnssTask->dmaRxSize;
+        for(uint16_t i = 0; i < gnssTask->dmaRxSize; i++){
+              message_copy_string.push_back(gnssTask->rxDmaBuffer[i]);
             }
+            LOG_DEBUG << message_copy_string.c_str();
+            gnssTask->rxDmaBuffer.clear();
+            message_copy_string.clear();
         }
-
-        gnssTask->rxDmaBuffer.clear();
-        LOG_DEBUG << message_copy_string.c_str();
-        message_copy_string.clear();
 
     }
 }
+
 

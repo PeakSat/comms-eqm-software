@@ -134,15 +134,14 @@ extern "C" void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
 
 extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
     gnssTask->dmaRxSize = Size;
-
     BaseType_t xHigherPriorityTaskWoken;
     xHigherPriorityTaskWoken = pdFALSE;
     xTaskNotifyFromISR(gnssTask->taskHandle, 0, eNoAction,  &xHigherPriorityTaskWoken);
-
     // Reset the DMA to receive the next chunk of data
     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->rxDmaBuffer.data(), 512);
     gnssTask->ISRcounter++;
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
 }
 
 extern "C" [[maybe_unused]] void UART5_IRQHandler(void) {

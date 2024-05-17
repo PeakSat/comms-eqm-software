@@ -24,16 +24,17 @@ public:
 
     /**
      * objects of necessary classes
-     */
+    */
     static GNSSReceiver gnssReceiver;
 
     /**
     * Variables for the Receive Operation from GNSS
     */
     uint16_t dmaRxSize;
-    etl::vector<uint8_t, 1024> rxDmaBuffer;
+    etl::vector<uint8_t, 512> rxDmaBuffer;
     uint8_t end_of_frame_flag = 0;
     uint16_t ISRcounter = 0;
+    uint8_t semaphore_state = 0;
     /**
      * GNSS Task Constructor
      */
@@ -54,6 +55,7 @@ public:
                           this->taskStack, &(this->taskBuffer));
     }
 private:
+
 
 };
 inline std::optional<GNSSTask> gnssTask;
