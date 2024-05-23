@@ -101,6 +101,7 @@ GNSSMessage GNSSReceiver::configure1PPSCableDelay(uint32_t cableDelay, Attribute
 
 GNSSMessage GNSSReceiver::configureNMEATalkerID(TalkerIDType type, Attributes attributes) {
     Payload payload;
+    payload.push_back(GNSSDefinitions::GNSSMessagesID::ConfigureNMEATalkerID);
     payload.push_back(static_cast<uint8_t>(type));
     payload.push_back(static_cast<uint8_t>(attributes));
     return GNSSMessage{GNSSMessagesID::ConfigureNMEATalkerID, static_cast<uint16_t>(payload.size()), payload};
@@ -525,8 +526,10 @@ GNSSMessage GNSSReceiver::getGLONASSTimeCorrectionParameters() {
     return GNSSMessage{GNSSMessagesID::GetGLONASSTimeCorrectionParameters, 0, {}};
 }
 
-GNSSMessage GNSSReceiver::setFactoryDefaults() {
-    return GNSSMessage{GNSSMessagesID::SetFactoryDefaults, 1, {1}};
+GNSSMessage GNSSReceiver::setFactoryDefaults(){
+    Payload payload;
+    payload.push_back(GNSSMessagesID::SetFactoryDefaults);
+    return GNSSMessage{GNSSMessagesID::SetFactoryDefaults, static_cast<uint16_t>(payload.size()), payload};
 }
 
 GNSSReceiver::GNSSReceiver() = default;

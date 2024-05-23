@@ -19,13 +19,17 @@ private:
     }
 
 public:
+    etl::vector<uint8_t, GNSSMessageSize> messageBody;
+    uint8_t t = 0;
     GNSSMessage(uint8_t id, uint16_t payloadLength, const GNSSDefinitions::Payload& payload) {
-
         messageBody.push_back(startOfSequence[0]);
         messageBody.push_back(startOfSequence[1]);
-        messageBody.push_back(((payloadLength + 1) >> 8) & 0xFF);
-        messageBody.push_back((payloadLength + 1) & 0xFF);
-        messageBody.push_back(id);
+        messageBody.push_back(payloadLength >> 8);
+        t = payloadLength;
+        messageBody.push_back(t);
+//        messageBody.push_back(((payloadLength + 1) >> 8) & 0xFF);
+//        messageBody.push_back((payloadLength + 1) & 0xFF);
+//        messageBody.push_back(id);
         for (uint8_t byte: payload) {
             messageBody.push_back(byte);
         }
@@ -50,9 +54,6 @@ public:
         messageBody.push_back(endOfSequence[1]);
     }
 
-    etl::vector<uint8_t, GNSSMessageSize> messageBody;
 
-    GNSSMessage() {
-
-    }
+    GNSSMessage() = default;
 };

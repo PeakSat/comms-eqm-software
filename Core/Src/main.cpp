@@ -138,8 +138,12 @@ extern "C" void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t S
     xHigherPriorityTaskWoken = pdFALSE;
     xTaskNotifyFromISR(gnssTask->taskHandle, 0, eNoAction,  &xHigherPriorityTaskWoken);
     // Reset the DMA to receive the next chunk of data
-    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->rxDmaBuffer.data(), 512);
-    gnssTask->ISRcounter++;
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart5, gnssTask->rxDmaBuffer.data(), 1024);
+//    gnssTask->ISRcounter++;
+//    if(gnssTask->ISRcounter == 15){
+//        gnssTask->printing = 1;
+//        gnssTask->ISRcounter = 0;
+//    }
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 
 }
