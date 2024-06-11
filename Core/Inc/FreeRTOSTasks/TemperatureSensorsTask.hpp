@@ -3,6 +3,7 @@
 #include <optional>
 #include "Task.hpp"
 #include "main.h"
+#include "CurrentSensorsTask.hpp"
 
 extern I2C_HandleTypeDef hi2c1;
 
@@ -17,10 +18,12 @@ public:
 
     void execute();
 
+    static inline TaskHandle_t temperatureSensorTaskHandle;
+
     TemperatureSensorsTask() : Task("External Temperature Sensors") {}
 
     void createTask(){
-        xTaskCreateStatic(vClassTask<TemperatureSensorsTask>, this->TaskName,
+        temperatureSensorTaskHandle = xTaskCreateStatic(vClassTask<TemperatureSensorsTask>, this->TaskName,
                           TemperatureSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
