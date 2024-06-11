@@ -43,7 +43,7 @@ public:
     GNSSTask() : Task("GNSS Logging Task") {
 
     }
-    uint8_t sendDataToGNSS();
+    void sendDataToGNSS();
     /**
      * execute
      */
