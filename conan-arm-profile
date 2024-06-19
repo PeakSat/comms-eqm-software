@@ -1,0 +1,21 @@
+[settings]
+arch=armv7
+compiler=gcc
+compiler.version=12
+compiler.libcxx=libstdc++11
+compiler.cppstd=gnu17
+build_type=Debug
+
+[buildenv]
+CC=/usr/bin/arm-none-eabi-gcc
+CXX=/usr/bin/arm-none-eabi-g++
+
+[conf]
+tools.build:cxxflags=["-mcpu=cortex-m7", "-mthumb", "-mthumb-interwork", "-ffunction-sections", "-fdata-sections", "-g", "-fno-common", "-fmessage-length=0", "-specs=nosys.specs", "-specs=nano.specs", "-mfloat-abi=hard", "-mfpu=fpv4-sp-d16"]
+tools.build:cflags=["-mcpu=cortex-m7", "-mthumb", "-mthumb-interwork", "-ffunction-sections", "-fdata-sections", "-g", "-fno-common", "-fmessage-length=0", "-specs=nosys.specs", "-specs=nano.specs", "-mfloat-abi=hard", "-mfpu=fpv4-sp-d16"]
+tools.build:exelinkflags=["-Wl,-gc-sections"]
+
+[env]
+CFLAGS=-mcpu=cortex-m7 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0
+CXXFLAGS=-mcpu=cortex-m7 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0
+LDFLAGS=-Wl,-gc-sections
