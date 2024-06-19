@@ -4,8 +4,8 @@
 
 void GNSSTask::execute() {
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_SET);
-
+    HAL_GPIO_WritePin(GNSS_RSTN_GPIO_Port, GNSS_RSTN_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GNSS_EN_GPIO_Port, GNSS_EN_Pin, GPIO_PIN_RESET);
 //    auto message = GNSSReceiver::configureGNSSConstellationTypeForNavigationSolution(0x01, GNSSDefinitions::Attributes::UpdateSRAMandFLASH);
 //    HAL_UART_Transmit(&huart5, message.messageBody.data(), message.messageBody.size(), HAL_MAX_DELAY);
 //    message = GNSSReceiver::configureGNSSNavigationMode(GNSSDefinitions::NavigationMode::Auto, GNSSDefinitions::Attributes::UpdateSRAMandFLASH);

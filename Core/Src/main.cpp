@@ -37,7 +37,7 @@ extern "C" void main_cpp(){
     watchdogTask.emplace();
     transceiverTask.emplace();
     mcuTemperatureTask.emplace();
-    temperatureSensorsTask.emplace();
+//    temperatureSensorsTask.emplace();
     gnssTask.emplace();
     timeKeepingTask.emplace();
 //    currentSensorsTask.emplace();
@@ -48,7 +48,7 @@ extern "C" void main_cpp(){
     canTestTask->createTask();
     transceiverTask->createTask();
     eMMCTask->createTask();
-    temperatureSensorsTask->createTask();
+//    temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
     timeKeepingTask->createTask();
@@ -107,7 +107,7 @@ extern "C" void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t 
         if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &CAN::rxHeader1, CAN::rxFifo1.data()) != HAL_OK) {
             /* Reception Error */
             Error_Handler();
-        }che
+        }
 //        canGatekeeperTask->switchActiveBus(CAN::Redundant);
         CAN::rxFifo1.repair();
         CAN::Frame newFrame = CAN::getFrame(&CAN::rxFifo1, CAN::rxHeader1.Identifier);
