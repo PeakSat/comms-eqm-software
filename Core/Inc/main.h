@@ -112,6 +112,8 @@ void main_cpp();
 #define GNSS_UART_TX_GPIO_Port GPIOB
 #define GNSS_RSTN_Pin GPIO_PIN_14
 #define GNSS_RSTN_GPIO_Port GPIOB
+#define GNSS_EN_Pin GPIO_PIN_15
+#define GNSS_EN_GPIO_Port GPIOB
 #define MONITOR_PG_Pin GPIO_PIN_10
 #define MONITOR_PG_GPIO_Port GPIOD
 #define MONITOR_TC_Pin GPIO_PIN_11

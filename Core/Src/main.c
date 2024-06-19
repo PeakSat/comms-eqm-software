@@ -127,7 +127,7 @@ int main(void)
   MX_UART4_Init();
   MX_FDCAN1_Init();
   MX_ADC3_Init();
-//  MX_SDMMC1_MMC_Init();
+  MX_SDMMC1_MMC_Init();
   MX_UART5_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
@@ -806,7 +806,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, EN_AGC_UHF_Pin|GNSS_RSTN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, EN_PA_UHF_Pin|GNSS_EN_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_SET);
@@ -851,8 +851,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : EN_AGC_UHF_Pin EN_PA_UHF_Pin GNSS_RSTN_Pin */
-  GPIO_InitStruct.Pin = EN_AGC_UHF_Pin|EN_PA_UHF_Pin|GNSS_RSTN_Pin;
+  /*Configure GPIO pins : EN_AGC_UHF_Pin EN_PA_UHF_Pin GNSS_RSTN_Pin GNSS_EN_Pin */
+  GPIO_InitStruct.Pin = EN_AGC_UHF_Pin|EN_PA_UHF_Pin|GNSS_RSTN_Pin|GNSS_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
