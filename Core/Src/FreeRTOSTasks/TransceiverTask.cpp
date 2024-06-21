@@ -158,11 +158,6 @@ void TransceiverTask::execute(){
     uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
     // ENABLE TXSFCS (FCS autonomously calculated)
     transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 4), error);
-    // ENABLE FCS FILTER
-    transceiver.spi_write_8(AT86RF215::BBC0_PC, reg | (1 << 6), error);
-    reg = transceiver.spi_read_8(AT86RF215::BBC0_FSKC2, error);
-    // DISABLE THE INTERLEAVING
-    transceiver.spi_write_8(AT86RF215::BBC0_PC, reg & 0, error);
 
     uint8_t temp = transceiver.spi_read_8(RF09_AUXS, error);
     transceiver.spi_write_8(RF09_AUXS, temp | (1 << 6), error );
