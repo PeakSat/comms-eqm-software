@@ -18,7 +18,7 @@ void CANTestTask::execute() {
     CAN::ActiveBus activeBus = CAN::ActiveBus::Redundant;
     while (true) {
         if(activeBus == CAN::ActiveBus::Redundant) {
-            activeBus = CAN::ActiveBus::Main;
+            //activeBus = CAN::ActiveBus::Main;
             canGatekeeperTask->switchActiveBus(activeBus);
             CAN::Application::createLogMessage(CAN::NodeIDs::OBC, false, testPayload1.data(), false);
         } else {

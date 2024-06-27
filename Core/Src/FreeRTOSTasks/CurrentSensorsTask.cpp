@@ -44,6 +44,8 @@ void CurrentSensorsTask::execute() {
 
         Logger::format.precision(Precision);
         channelMeasurement = currentSensor.getMeasurement().value();
+//        vTaskDelay(2000);
+        LOG_DEBUG << "INA" ;
 
         display(Channel::FPGA, true, true, true, true);
         display(Channel::RF_UHF, true, true, true, true);

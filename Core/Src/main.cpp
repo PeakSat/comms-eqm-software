@@ -37,7 +37,7 @@ extern "C" void main_cpp(){
     watchdogTask.emplace();
     transceiverTask.emplace();
     mcuTemperatureTask.emplace();
-//    temperatureSensorsTask.emplace();
+    temperatureSensorsTask.emplace();
     gnssTask.emplace();
     timeKeepingTask.emplace();
 //    currentSensorsTask.emplace();
@@ -48,7 +48,7 @@ extern "C" void main_cpp(){
     canTestTask->createTask();
     transceiverTask->createTask();
     eMMCTask->createTask();
-//    temperatureSensorsTask->createTask();
+    temperatureSensorsTask->createTask();
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
     timeKeepingTask->createTask();

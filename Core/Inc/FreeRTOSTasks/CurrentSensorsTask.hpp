@@ -5,7 +5,7 @@
 #include "ina3221.hpp"
 #include "TemperatureSensorsTask.hpp"
 
-extern I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c4;
 
 class CurrentSensorsTask : public Task {
 public:
@@ -19,7 +19,7 @@ public:
     };
 
     static inline INA3221::Error error = INA3221::Error::NO_ERRORS;
-    static inline INA3221::INA3221 currentSensor = INA3221::INA3221(hi2c1, INA3221::INA3221Config(), error);
+    static inline INA3221::INA3221 currentSensor = INA3221::INA3221(hi2c4, INA3221::INA3221Config(), error);
     INA3221::ChannelMeasurement channelMeasurement;
 
     /**
