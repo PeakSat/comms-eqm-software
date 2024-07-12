@@ -52,7 +52,7 @@ extern "C" void main_cpp(){
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
     timeKeepingTask->createTask();
-//    currentSensorsTask->createTask();
+    currentSensorsTask->createTask();
 
 
     vTaskStartScheduler();
