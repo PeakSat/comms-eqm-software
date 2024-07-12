@@ -18,13 +18,15 @@ void CANTestTask::execute() {
     CAN::ActiveBus activeBus = CAN::ActiveBus::Redundant;
     while (true) {
         if(activeBus == CAN::ActiveBus::Redundant) {
-            //activeBus = CAN::ActiveBus::Main;
+            activeBus = CAN::ActiveBus::Main;
             canGatekeeperTask->switchActiveBus(activeBus);
             CAN::Application::createLogMessage(CAN::NodeIDs::OBC, false, testPayload1.data(), false);
+            LOG_DEBUG << "REDUNDANT CAN is sending";
         } else {
             activeBus = CAN::ActiveBus::Redundant;
             canGatekeeperTask->switchActiveBus(activeBus);
             CAN::Application::createLogMessage(CAN::NodeIDs::OBC, false, testPayload2.data(), false);
+            LOG_DEBUG << "MAIN CAN is sending";
         }
         xTaskNotify(canGatekeeperTask->taskHandle, 0, eNoAction);
         vTaskDelay(pdMS_TO_TICKS(3000));
