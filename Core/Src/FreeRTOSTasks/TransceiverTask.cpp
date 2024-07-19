@@ -172,9 +172,9 @@ void TransceiverTask::execute(){
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks;
 
-    const uint32_t idle_interval = 34000; // 58 seconds
-    const uint32_t rx_interval = 13000;    // 1 second
-    const uint32_t tx_interval = 13000;    // 1 second
+    const uint32_t idle_interval = 54000; // 54 seconds for thermal balance // 2 seconds for the extreme temps
+    const uint32_t rx_interval = 3000;    // 3 seconds for thermal balance // 150000 for the extreme temps
+    const uint32_t tx_interval = 3000;    // 3 seconds for thermal balance // 150000 for the extreme temps
 
     TransceiverState transceiver_state = IDLE;
     txrx = -1;
