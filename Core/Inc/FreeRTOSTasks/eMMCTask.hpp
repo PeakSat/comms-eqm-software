@@ -6,7 +6,7 @@
 class eMMCTask : public Task {
 private:
     const static inline uint16_t DelayMs = 15000;
-    const static inline uint16_t TaskStackDepth = 4000;
+    const static inline uint16_t TaskStackDepth = 6000;
 
     StackType_t taskStack[TaskStackDepth];
 public:

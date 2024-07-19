@@ -172,9 +172,9 @@ void TransceiverTask::execute(){
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks;
 
-    const uint32_t idle_interval = 58000; // 58 seconds
-    const uint32_t rx_interval = 1000;    // 1 second
-    const uint32_t tx_interval = 1000;    // 1 second
+    const uint32_t idle_interval = 34000; // 58 seconds
+    const uint32_t rx_interval = 13000;    // 1 second
+    const uint32_t tx_interval = 13000;    // 1 second
 
     TransceiverState transceiver_state = IDLE;
     txrx = -1;
