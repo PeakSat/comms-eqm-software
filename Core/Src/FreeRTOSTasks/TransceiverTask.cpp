@@ -145,15 +145,13 @@ void TransceiverTask::execute(){
     HAL_GPIO_WritePin(EN_RX_UHF_GPIO_Port, EN_RX_UHF_Pin, GPIO_PIN_RESET);
     LOG_DEBUG << "RX SWITCH ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
-    // ENABLE THE RX AMP
-    HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
-    LOG_DEBUG << "RX AMP ENABLED " ;
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    // DISABLE THE RX AMP
+    HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_RESET);
+    LOG_DEBUG << "RX AMP DISABLED " ;
     // TRANSMIT PINS //
     // ENABLE TX AMP
     HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_RESET);
     LOG_DEBUG << "TX AMP ENABLED " ;
-
 
     uint8_t reg = transceiver.spi_read_8(AT86RF215::BBC0_PC, error);
     // ENABLE TXSFCS (FCS autonomously calculated)
@@ -178,7 +176,7 @@ void TransceiverTask::execute(){
 
     uint16_t currentPacketLength = MaxPacketLength;
     PacketType packet = createRandomPacket(MaxPacketLength);
-
+    txrx = 0;
     if(transceiverTask->txrx) {
         transceiver.set_state(AT86RF215::RF09, State::RF_TXPREP, error);
         vTaskDelay(pdMS_TO_TICKS(10));
@@ -193,7 +191,7 @@ void TransceiverTask::execute(){
     uint16_t received_length = 0;
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
-    interval = 15000;
+    interval = 150000;
     initial_ticks = HAL_GetTick();
     while(true) {
         current_ticks = HAL_GetTick();
@@ -206,7 +204,12 @@ void TransceiverTask::execute(){
             {
                 txrx = 1;
                 LOG_DEBUG << "waiting for RX mode" ;
+                // ENABLE THE RX AMP
+                HAL_GPIO_WritePin(EN_UHF_AMP_RX_GPIO_Port, EN_UHF_AMP_RX_Pin, GPIO_PIN_SET);
+                LOG_DEBUG << "RX AMP ENABLED " ;
+                // DISABLE THE TX AMP
                 HAL_GPIO_WritePin(EN_PA_UHF_GPIO_Port, EN_PA_UHF_Pin, GPIO_PIN_SET);
+                LOG_DEBUG << "TX AMP DISABLED " ;
                 setConfiguration(calculatePllChannelFrequency09(FrequencyUHF), calculatePllChannelNumber09(FrequencyUHF));
                 transceiver.chip_reset(error);
                 transceiver.setup(error);
@@ -248,7 +251,6 @@ void TransceiverTask::execute(){
         {
             sent_packets++;
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
-            vTaskDelay(pdMS_TO_TICKS(200));
             transceiver.set_state(AT86RF215::RF09, State::RF_TX, error);
             transceiver.TransmitterFrameEnd_flag = false;
             LOG_DEBUG << "PACKET IS SENT " << sent_packets ;
