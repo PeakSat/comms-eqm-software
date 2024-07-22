@@ -193,6 +193,7 @@ void TransceiverTask::execute(){
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
     interval = 150000;
     initial_ticks = HAL_GetTick();
+    vTaskDelay(10000);
     while(true) {
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
