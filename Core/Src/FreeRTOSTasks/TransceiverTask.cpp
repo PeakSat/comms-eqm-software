@@ -128,7 +128,7 @@ void TransceiverTask::modulationConfig(){
 }
 
 void TransceiverTask::execute(){
-
+    vTaskDelay(10000);
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
     LOG_DEBUG << "RF 5V ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
@@ -192,7 +192,6 @@ void TransceiverTask::execute(){
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
     interval = 150000;
     initial_ticks = HAL_GetTick();
-    vTaskDelay(10000);
     while(true) {
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
@@ -251,7 +250,13 @@ void TransceiverTask::execute(){
         {
             sent_packets++;
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
+            vTaskDelay(300);
             transceiver.set_state(AT86RF215::RF09, State::RF_TX, error);
+            if (transceiver.get_state(AT86RF215::RF09, error) == (AT86RF215::State::RF_TX))
+                LOG_DEBUG << " STATE = TX ";
+            else{
+                LOG_DEBUG << transceiver.get_state(AT86RF215::RF09, error);
+            }
             transceiver.TransmitterFrameEnd_flag = false;
             LOG_DEBUG << "PACKET IS SENT " << sent_packets ;
         }
