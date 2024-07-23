@@ -132,7 +132,6 @@ void TransceiverTask::execute(){
     HAL_GPIO_WritePin(P5V_RF_EN_GPIO_Port, P5V_RF_EN_Pin, GPIO_PIN_SET);
     LOG_DEBUG << "RF 5V ENABLED " ;
     vTaskDelay(pdMS_TO_TICKS(1000));
-
     HAL_GPIO_WritePin(RF_RST_GPIO_Port, RF_RST_Pin, GPIO_PIN_SET);
     LOG_DEBUG << "RF RESET ENABLED " ;
     while (checkTheSPI() != 0) {
