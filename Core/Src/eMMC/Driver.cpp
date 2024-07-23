@@ -30,7 +30,7 @@ uint8_t eMMC::initializeEMMC(){
     hmmc1.Init.ClockDiv = 1;
     if (HAL_MMC_Init(&hmmc1) != HAL_OK)
     {
-        Error_Handler();
+        return 4;
     }
 
     if(HAL_MMC_ConfigWideBusOperation(&hmmc1, SDMMC_BUS_WIDE_4B)!=HAL_OK){
