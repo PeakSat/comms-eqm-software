@@ -250,7 +250,7 @@ void TransceiverTask::execute(){
         {
             sent_packets++;
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
-            vTaskDelay(300);
+            vTaskDelay(200);
             transceiver.set_state(AT86RF215::RF09, State::RF_TX, error);
             if (transceiver.get_state(AT86RF215::RF09, error) == (AT86RF215::State::RF_TX))
                 LOG_DEBUG << " STATE = TX ";

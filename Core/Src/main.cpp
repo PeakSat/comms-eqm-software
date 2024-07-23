@@ -40,7 +40,7 @@ extern "C" void main_cpp(){
     temperatureSensorsTask.emplace();
     gnssTask.emplace();
     timeKeepingTask.emplace();
-    currentSensorsTask.emplace();
+//    currentSensorsTask.emplace();
 
     watchdogTask->createTask();
     uartGatekeeperTask->createTask();
@@ -52,7 +52,7 @@ extern "C" void main_cpp(){
     mcuTemperatureTask->createTask();
     gnssTask->createTask();
     timeKeepingTask->createTask();
-    currentSensorsTask->createTask();
+//    currentSensorsTask->createTask();
 
 
     vTaskStartScheduler();
