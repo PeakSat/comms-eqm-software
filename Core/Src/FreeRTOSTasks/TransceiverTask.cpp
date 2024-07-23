@@ -173,9 +173,9 @@ void TransceiverTask::execute(){
     uint32_t ok_packets = 0, wrong_packets = 0, sent_packets = 0;
     uint32_t current_ticks, elapsed_time, initial_ticks;
 
-    const uint32_t idle_interval = 54000; // 54 seconds for thermal balance // 2 seconds for the extreme temps
-    const uint32_t rx_interval = 3000;    // 3 seconds for thermal balance // 150000 for the extreme temps
-    const uint32_t tx_interval = 3000;    // 3 seconds for thermal balance // 150000 for the extreme temps
+    const uint32_t idle_interval = 1000; // 54 seconds for thermal balance // 2 seconds for the extreme temps
+    const uint32_t rx_interval = 150000;    // 3 seconds for thermal balance // 150000 for the extreme temps
+    const uint32_t tx_interval = 150000;    // 3 seconds for thermal balance // 150000 for the extreme temps
 
     TransceiverState transceiver_state = IDLE;
     txrx = -1;
@@ -276,6 +276,7 @@ void TransceiverTask::execute(){
         {
             sent_packets++;
             transceiver.transmitBasebandPacketsTx(AT86RF215::RF09, packet.data(), currentPacketLength, error);
+            vTaskDelay(pdMS_TO_TICKS(200));
             transceiver.set_state(AT86RF215::RF09, State::RF_TX, error);
             transceiver.TransmitterFrameEnd_flag = false;
             LOG_DEBUG << "PACKET IS SENT " << sent_packets ;
