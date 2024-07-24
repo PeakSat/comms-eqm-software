@@ -24,7 +24,7 @@ void GNSSTask::execute() {
     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 512);
     while(true){
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
-
+        vTaskDelay(30000);
         uint8_t found_dollar = 0;
         etl::string<512> GNSSMessage = {};
         for (uint8_t  byte : incomingMessage) {
