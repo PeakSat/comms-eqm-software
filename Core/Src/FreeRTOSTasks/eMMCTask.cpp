@@ -13,10 +13,11 @@ void eMMC_info_show(HAL_MMC_CardInfoTypeDef info){
 
 void eMMCTask::execute() {
     uint8_t init_status = eMMC::initializeEMMC();
-//    while (eMMC::initializeEMMC() != 0) {
-//        vTaskDelay(10);
-//    };
     LOG_DEBUG << "eMMC init status code: "<<init_status;
+    while (eMMC::initializeEMMC() != 0) {
+        vTaskDelay(10);
+    };
+
 //    vTaskSuspend(taskHandle);
     eMMC_info_show(eMMC::checkEMMC());
 
