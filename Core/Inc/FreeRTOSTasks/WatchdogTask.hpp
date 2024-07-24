@@ -15,7 +15,7 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask < WatchdogTask > , this->TaskName, WatchdogTask::TaskStackDepth, this,
-                          tskIDLE_PRIORITY+3, this->taskStack, &(this->taskBuffer));
+                          tskIDLE_PRIORITY+13, this->taskStack, &(this->taskBuffer));
     }
 
 private:

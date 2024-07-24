@@ -24,7 +24,7 @@ public:
 
     void createTask(){
         temperatureSensorTaskHandle = xTaskCreateStatic(vClassTask<TemperatureSensorsTask>, this->TaskName,
-                          TemperatureSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 2,
+                          TemperatureSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 9,
                           this->taskStack, &(this->taskBuffer));
     }
 };

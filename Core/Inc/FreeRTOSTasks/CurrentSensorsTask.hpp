@@ -42,7 +42,7 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask < CurrentSensorsTask > , this->TaskName,
-                          CurrentSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
+                          CurrentSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 6,
                           this->taskStack, &(this->taskBuffer));
     }
 

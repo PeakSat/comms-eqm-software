@@ -76,7 +76,7 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask<TimeKeepingTask>, this->TaskName, TimeKeepingTask::TaskStackDepth, this,
-                          tskIDLE_PRIORITY + 1, this->taskStack, &(this->taskBuffer));
+                          tskIDLE_PRIORITY + 3, this->taskStack, &(this->taskBuffer));
     }
 
 };
