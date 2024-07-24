@@ -14,7 +14,7 @@ extern ADC_HandleTypeDef hadc3;
  */
 class MCUTemperatureTask : public Task {
 private:
-    const uint16_t delayMs = 5000;
+    const uint16_t delayMs = 60000;
 
     const static inline uint16_t TaskStackDepth = 1000;
 
@@ -47,7 +47,7 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask<MCUTemperatureTask>, this->TaskName, MCUTemperatureTask::TaskStackDepth, this,
-                          tskIDLE_PRIORITY + 4, this->taskStack, &(this->taskBuffer));
+                          tskIDLE_PRIORITY + 1, this->taskStack, &(this->taskBuffer));
     }
 
 };

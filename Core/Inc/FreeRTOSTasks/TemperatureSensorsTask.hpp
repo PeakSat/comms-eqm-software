@@ -9,7 +9,7 @@ extern I2C_HandleTypeDef hi2c1;
 
 class TemperatureSensorsTask : public Task {
 private:
-    const static inline uint16_t DelayMs = 1000;
+    const static inline uint16_t DelayMs = 60000;
     const static inline uint16_t TaskStackDepth = 2000;
     const static inline uint8_t LoggerPrecision = 2;
 
@@ -24,7 +24,7 @@ public:
 
     void createTask(){
         temperatureSensorTaskHandle = xTaskCreateStatic(vClassTask<TemperatureSensorsTask>, this->TaskName,
-                          TemperatureSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 9,
+                          TemperatureSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 2,
                           this->taskStack, &(this->taskBuffer));
     }
 };

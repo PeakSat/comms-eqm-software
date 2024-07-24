@@ -42,12 +42,12 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask < CurrentSensorsTask > , this->TaskName,
-                          CurrentSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 6,
+                          CurrentSensorsTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
 
 private:
-    static constexpr uint16_t DelayMs = 3000;
+    static constexpr uint16_t DelayMs = 60000;
     static constexpr uint16_t TaskStackDepth = 2000;
     static constexpr uint8_t Precision = 3;
 

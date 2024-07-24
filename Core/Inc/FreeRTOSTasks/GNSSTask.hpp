@@ -49,7 +49,7 @@ public:
      */
     void createTask() {
         taskHandle = xTaskCreateStatic(vClassTask < GNSSTask > , this->TaskName,
-                          GNSSTask::TaskStackDepth, this, tskIDLE_PRIORITY + 7,
+                          GNSSTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
 private:

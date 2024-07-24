@@ -5,7 +5,7 @@
 
 class eMMCTask : public Task {
 private:
-    const static inline uint16_t DelayMs = 15000;
+    const static inline uint16_t DelayMs = 60000;
     const static inline uint16_t TaskStackDepth = 2000;
 
     StackType_t taskStack[TaskStackDepth];
@@ -17,7 +17,7 @@ public:
 
     void createTask(){
         xTaskCreateStatic(vClassTask<eMMCTask>, this->TaskName,
-                          eMMCTask::TaskStackDepth, this, tskIDLE_PRIORITY + 5,
+                          eMMCTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
 };

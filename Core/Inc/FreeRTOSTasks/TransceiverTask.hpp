@@ -80,7 +80,7 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask < TransceiverTask > , this->TaskName,
-                          TransceiverTask::TaskStackDepth, this, tskIDLE_PRIORITY + 8,
+                          TransceiverTask::TaskStackDepth, this, tskIDLE_PRIORITY + 1,
                           this->taskStack, &(this->taskBuffer));
     }
 
