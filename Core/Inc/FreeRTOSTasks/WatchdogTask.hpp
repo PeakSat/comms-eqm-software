@@ -15,11 +15,11 @@ public:
 
     void createTask() {
         xTaskCreateStatic(vClassTask < WatchdogTask > , this->TaskName, WatchdogTask::TaskStackDepth, this,
-                          tskIDLE_PRIORITY-1, this->taskStack, &(this->taskBuffer));
+                          tskIDLE_PRIORITY+2, this->taskStack, &(this->taskBuffer));
     }
 
 private:
-    /**
+    /*
      * @brief Calculates and stores the window time in milliseconds.
      *
      * This constant represents the duration during which the watchdog counter should
