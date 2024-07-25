@@ -30,7 +30,7 @@ void CANGatekeeperTask::execute() {
     uint32_t ulNotifiedValue;
 
     while (true) {
-
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         xTaskNotifyWait(0, 0, &ulNotifiedValue, portMAX_DELAY);
 
         if(getIncomingSFMessagesCount()){
@@ -43,5 +43,6 @@ void CANGatekeeperTask::execute() {
             xQueueReceive(outgoingQueue, &out_message, portMAX_DELAY);
             CAN::send(out_message, ActiveBus);
         }
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
     }
 }

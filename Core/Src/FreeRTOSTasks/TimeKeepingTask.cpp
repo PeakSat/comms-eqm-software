@@ -42,6 +42,7 @@ void TimeKeepingTask::execute() {
 #ifndef STM32
         RTC_TimeGet(&dateTime);
 #else
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN);
         HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN);
 
@@ -49,6 +50,7 @@ void TimeKeepingTask::execute() {
 #endif
         setTimePlatformParameters(dateTime);
         printOnBoardTime();
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
         vTaskDelay(pdMS_TO_TICKS(DelayMs));
     }
 }

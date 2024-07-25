@@ -38,6 +38,7 @@ void CurrentSensorsTask::execute() {
     Logger::format.precision(Precision);
 
     while (true) {
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         channelMeasurement = currentSensor.getMeasurement();
         if (not channelMeasurement.has_value()) {
             LOG_ERROR << "Could not get current measurements!";
@@ -46,7 +47,7 @@ void CurrentSensorsTask::execute() {
             display(Channel::RF_UHF, true, true, true, true);
 
         }
-
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
         vTaskDelay(pdMS_TO_TICKS(DelayMs));
     }
 

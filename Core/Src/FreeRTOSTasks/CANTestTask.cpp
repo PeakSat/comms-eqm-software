@@ -17,6 +17,7 @@ void CANTestTask::execute() {
     String<ECSSMaxMessageSize> testPayload2("CAN2 SAYS: WHO LET THE DOGS OUT!?");
     CAN::ActiveBus activeBus = CAN::ActiveBus::Redundant;
     while (true) {
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         if(activeBus == CAN::ActiveBus::Redundant) {
             activeBus = CAN::ActiveBus::Main;
             canGatekeeperTask->switchActiveBus(activeBus);
@@ -28,6 +29,7 @@ void CANTestTask::execute() {
             CAN::Application::createLogMessage(CAN::NodeIDs::OBC, false, testPayload2.data(), false);
             LOG_DEBUG << "MAIN CAN is sending";
         }
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
         xTaskNotify(canGatekeeperTask->taskHandle, 0, eNoAction);
         vTaskDelay(pdMS_TO_TICKS(3000));
     }

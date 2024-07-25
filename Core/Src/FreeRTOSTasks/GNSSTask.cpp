@@ -23,6 +23,7 @@ void GNSSTask::execute() {
 
     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, incomingMessage, 512);
     while(true){
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         xTaskNotifyWait(0, 0, nullptr, portMAX_DELAY);
         vTaskDelay(30000);
         uint8_t found_dollar = 0;
@@ -32,6 +33,7 @@ void GNSSTask::execute() {
         }
         LOG_DEBUG << GNSSMessage.c_str();
         new(&(incomingMessage)) uint8_t[512];
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
     }
 }
 

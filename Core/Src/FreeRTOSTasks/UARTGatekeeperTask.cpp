@@ -13,7 +13,8 @@ void UARTGatekeeperTask::execute() {
         XDMAC_ChannelTransfer(XDMAC_CHANNEL_0, output.data(), txRegisterAddress, output.size());
         #else
         extern UART_HandleTypeDef huart4;
-        HAL_UART_Transmit(&huart4, reinterpret_cast<const uint8_t *>(output.data()), output.size(), 100);
+        HAL_UART_Transmit(&huart4, reinterpret_cast<const uint8_t *>(output.data()), output.size(), 500);
         #endif
+
     }
 }

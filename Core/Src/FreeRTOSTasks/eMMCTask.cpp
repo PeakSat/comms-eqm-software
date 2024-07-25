@@ -32,6 +32,7 @@ void eMMCTask::execute() {
     uint8_t read_data_buff[512];
 
     while(true){
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         LOG_DEBUG<<"Reading from block address: "<<block_address_a;
         eMMC::readBlockEMMC(read_data_buff, block_address_a);
         for(uint8_t i=0;i<50;i++){
@@ -50,7 +51,7 @@ void eMMCTask::execute() {
         LOG_DEBUG<<"Writing to block address: "<<block_address_b;
         status = eMMC::writeBlockEMMC(data_buff, block_address_b);
         LOG_DEBUG<<"Status: "<<status;
-
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
         vTaskDelay(pdMS_TO_TICKS(DelayMs));
 //        vTaskSuspend(taskHandle);
     }

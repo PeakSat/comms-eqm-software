@@ -5,9 +5,15 @@ void MCUTemperatureTask::execute() {
     #else
     AFEC0_ConversionStart();
     #endif
+// to do
+//    while(HAL_ADCEx_Calibration_Start(&hadc3, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED) != 0){
+//        vTaskDelay(10);
+//    }
 
     while (true) {
         #ifdef STM32
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
+
         if (HAL_ADCEx_Calibration_Start(&hadc3, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED) != HAL_OK)
         {
             /* Calibration Error */
@@ -35,7 +41,7 @@ void MCUTemperatureTask::execute() {
 
         HAL_ADC_Stop(&hadc3);
         vTaskDelay(pdMS_TO_TICKS(delayMs));
-
+        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
         #else
         AFEC0_ConversionStart();
         vTaskDelay(pdMS_TO_TICKS(1));

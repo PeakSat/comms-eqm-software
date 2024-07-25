@@ -10,6 +10,7 @@ void TemperatureSensorsTask::execute() {
     };
 
     while(true){
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         for (TMP117::TMP117 tempSensor : tempSensors) {
             etl::pair<TMP117::Error, float> temperature = tempSensor.getTemperature(true);
             if (temperature.first == TMP117::Error::NoErrors) {
@@ -23,6 +24,7 @@ void TemperatureSensorsTask::execute() {
 //        vTaskResume(CurrentSensorsTask::currentSensorTaskHandle);
 //        vTaskSuspend(NULL);
 //
+        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         vTaskDelay(DelayMs);
     }
 }
