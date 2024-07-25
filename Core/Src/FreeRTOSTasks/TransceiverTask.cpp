@@ -181,7 +181,7 @@ void TransceiverTask::execute(){
     txrx = -1;
     initial_ticks = HAL_GetTick();
     while(true) {
-        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
+//        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
         switch(transceiver_state)
@@ -282,6 +282,6 @@ void TransceiverTask::execute(){
             transceiver.TransmitterFrameEnd_flag = false;
             LOG_DEBUG << "PACKET IS SENT " << sent_packets ;
         }
-        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
+//        LOG_DEBUG << "{END OF" << this->TaskName << "}" ;
     }
 }

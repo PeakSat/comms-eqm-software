@@ -17,7 +17,7 @@ void CANTestTask::execute() {
     String<ECSSMaxMessageSize> testPayload2("CAN2 SAYS: WHO LET THE DOGS OUT!?");
     CAN::ActiveBus activeBus = CAN::ActiveBus::Redundant;
     while (true) {
-        LOG_DEBUG << "{START OF" << this->TaskName << "}" ;
+        LOG_DEBUG << "{START OF " << this->TaskName << " }" ;
         if(activeBus == CAN::ActiveBus::Redundant) {
             activeBus = CAN::ActiveBus::Main;
             canGatekeeperTask->switchActiveBus(activeBus);
