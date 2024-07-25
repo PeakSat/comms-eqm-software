@@ -31,8 +31,8 @@ static void vClassTask(void *pvParameters) {
 
 extern "C" void main_cpp(){
     uartGatekeeperTask.emplace();
-    canGatekeeperTask.emplace();
-    canTestTask.emplace();
+//    canGatekeeperTask.emplace();
+//    canTestTask.emplace();
     eMMCTask.emplace();
     watchdogTask.emplace();
     transceiverTask.emplace();
@@ -44,8 +44,8 @@ extern "C" void main_cpp(){
 
     watchdogTask->createTask();
     uartGatekeeperTask->createTask();
-    canGatekeeperTask->createTask();
-    canTestTask->createTask();
+//    canGatekeeperTask->createTask();
+//    canTestTask->createTask();
     transceiverTask->createTask();
     eMMCTask->createTask();
     temperatureSensorsTask->createTask();
