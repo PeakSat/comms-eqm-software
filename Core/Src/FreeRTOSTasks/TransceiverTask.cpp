@@ -192,7 +192,10 @@ void TransceiverTask::execute(){
     uint32_t current_ticks, elapsed_time, initial_ticks, interval;
     interval = 150000;
     initial_ticks = HAL_GetTick();
+    uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
     while(true) {
+        uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
+        LOG_DEBUG << uxHighWaterMark;
         current_ticks = HAL_GetTick();
         elapsed_time = current_ticks - initial_ticks ;
         if(elapsed_time >= interval)
